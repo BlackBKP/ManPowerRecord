@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ManPowerRecord.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,15 @@ namespace ManPowerRecord.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public List<JobModel> GetJobs()
+        {
+            List<JobModel> jobs = new List<JobModel>();
+
+
+
+            return jobs;
         }
     }
 }

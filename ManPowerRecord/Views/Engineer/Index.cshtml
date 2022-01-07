@@ -1,0 +1,68 @@
+﻿<div class="row pt-3">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Engineer</span>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <label for="name">Name</label>
+                                <input id="name" type="text" class="form-control" placeholder="Name" />
+                            </div>
+                            <div class="col-xl-4">
+                                <label for="start">Start</label>
+                                <input id="start" type="date" class="form-control" />
+                            </div>
+                            <div class="col-xl-4">
+                                <label for="stop">Stop</label>
+                                <input id="stop" type="date" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Table</span>
+            </div>
+            <div class="card-body">
+                <table id="table_jobs" class="table table-sm table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Job ID</th>
+                            <th>Cost</th>
+                            <th>MD</th>
+                            <th>PD</th>
+                            <th>Factor</th>
+                            <th>Total Manpower</th>
+                            <th>Cost/Manpower</th>
+                            <th>Manpower</th>
+                            <th>Manpower/Total</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+            table = $('#table_jobs').DataTable();
+        });
+    </script>
+}

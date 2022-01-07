@@ -15,6 +15,15 @@ namespace ManPowerRecord.Controllers
             return View();
         }
 
+        public List<EventModel> GetHolidays()
+        {
+            List<EventModel> holidays = new List<EventModel>();
+
+
+
+            return holidays;
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

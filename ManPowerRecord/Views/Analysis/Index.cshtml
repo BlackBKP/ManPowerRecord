@@ -1,24 +1,65 @@
 ﻿<div class="row pt-3">
-    <div class="col-xl-6">
+    <div class="col-xl-2">
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="job">Job</label>
+                        <select id="job" class="form-control">
+                            <option selected disabled>Please Select Job</option>
+                            <option>J21-0001</option>
+                            <option>J21-0002</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary form-control">
+                    Accept
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-5">
         <div class="card">
             <div class="card-header">
                 <span class="card-title">Chart 1</span>
             </div>
             <div class="card-body">
                 <div>
-                    <canvas id="myChart1" width="400" height="400"></canvas>
+                    <canvas id="myChart1" height="300"></canvas>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-xl-6">
         <div class="card">
             <div class="card-header">
                 <span class="card-title">Chart 2</span>
             </div>
             <div class="card-body">
                 <div>
-                    <canvas id="myChart2" width="400" height="400"></canvas>
+                    <canvas id="myChart2" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-5">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Chart 3</span>
+            </div>
+            <div class="card-body">
+                <div>
+                    <canvas id="myChart3" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Chart 4</span>
+            </div>
+            <div class="card-body">
+                <div>
+                    <canvas id="myChart4" height="300"></canvas>
                 </div>
             </div>
         </div>
@@ -29,7 +70,7 @@
     <script type="text/javascript">
         const ctx1 = document.getElementById('myChart1').getContext('2d');
         const myChart1 = new Chart(ctx1, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                 datasets: [{
@@ -56,12 +97,18 @@
             },
             options: {
                 maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right'
+                    },
+                },
             }
         });
 
         const ctx2 = document.getElementById('myChart2').getContext('2d');
         const myChart2 = new Chart(ctx2, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                 datasets: [{
@@ -87,6 +134,78 @@
                 }]
             },
             options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right'
+                    },
+                }
+            }
+        });
+
+        const ctx3 = document.getElementById('myChart3').getContext('2d');
+        const myChart3 = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+            }
+        });
+
+        const ctx4 = document.getElementById('myChart4').getContext('2d');
+        const myChart4 = new Chart(ctx4, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
                 maintainAspectRatio: false,
             }
         });

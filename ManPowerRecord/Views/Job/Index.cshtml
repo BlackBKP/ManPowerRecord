@@ -5,7 +5,7 @@
                 <span class="card-title">Jobs</span>
             </div>
             <div class="card-body">
-                <table class="table table-sm table-bordered">
+                <table id="table_job" class="table table-sm table-bordered">
                     <thead>
                         <tr>
                             <th>Job ID</th>
@@ -28,3 +28,11 @@
         </div>
     </div>
 </div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#table_job').DataTable();
+        });
+    </script>
+}
