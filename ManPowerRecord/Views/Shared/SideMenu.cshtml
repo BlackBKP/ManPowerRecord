@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Http
+<aside class="main-sidebar sidebar-dark-primary elevation-2">
+    <!-- Brand Logo -->
+    <a class="brand-link" asp-controller="Home" asp-action="Index">
+        @*<img src="~/images/icon.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">*@
+        <span class="brand-text font-weight-light">Labor Cost Analysis</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar" style="padding-left:5px">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>Job View</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Admin" asp-action="Index">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>Create Job</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Job" asp-action="Index">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>Jobs</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Analysis" asp-action="Index">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>Analysis</p>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

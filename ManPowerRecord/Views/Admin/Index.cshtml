@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="row p-3">
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Create Job</span>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="job">Job Number</label>
+                        <input id="job" type="text" class="form-control" placeholder="JXX-XXXX" />
+                    </div>
+                    <div class="form-group">
+                        <label for="job_name">Job Name</label>
+                        <input id="job_name" type="text" class="form-control" placeholder="Job Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="job_description">Job Description</label>
+                        <input id="job_description" type="text" class="form-control" placeholder="Job Description" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sale_department">Sale Department</label>
+                        <input id="sale_department" type="text" class="form-control" placeholder="Sale Department" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sale">Sale</label>
+                        <input id="sale" type="text" class="form-control" placeholder="Sale" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cost">Cost</label>
+                        <input id="cost" type="text" class="form-control" placeholder="Cost" />
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <div class="form-check">
+                                <label>
+                                    <input type="checkbox" /> Marketing Develop
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <div class="form-check">
+                                <label>
+                                    <input type="checkbox" /> Product Develop
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-danger">
+                    Cancel
+                </button>
+                <button class="btn btn-success">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Jobs</span>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Job ID</th>
+                            <th>Job Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>J21-0001</td>
+                            <td>Job 1</td>
+                            <td>Job 1</td>
+                        </tr>
+                        <tr>
+                            <td>J21-0002</td>
+                            <td>Job 2</td>
+                            <td>Job 2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+    </script>
+}

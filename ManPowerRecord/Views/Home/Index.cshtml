@@ -1,0 +1,239 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="row p-3">
+    <div class="col-xl-2 col-4">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Add Task</span>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="start_task">Start</label>
+                        <input id="start_task" type="datetime-local" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="stop_task">Stop</label>
+                        <input id="stop_task" type="datetime-local" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="task_job_id">Job ID</label>
+                        <input id="task_job_id" type="text" class="form-control" placeholder="JXX-XXXX"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="task_description">Description</label>
+                        <input id="task_description" type="text" class="form-control" placeholder="Description" />
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button id="btn_add_task" class="btn btn-primary">
+                    Add Task
+                </button>
+                <button class="btn btn-danger">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-10 col-8">
+        <div class="card">
+            <div class="card-body">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="taskmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Add Tasks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="job">Job</label>
+                        <input id="job" type="text" class="form-control" placeholder="JXX-XXXX" />
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input id="start_date" type="date" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="stop_date">Stop Date</label>
+                        <input id="stop_date" type="date" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_time">Start Time</label>
+                        <input id="start_time" type="time" class="form-control" value="08:30"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="stop_time">Stop Time</label>
+                        <input id="stop_time" type="time" class="form-control" value="17:30"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="task">Task</label>
+                        <input id="task" type="text" class="form-control" placeholder="Please Select Tasks"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Accept</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        var calendar;
+        var calendarEl;
+        $(document).ready(function () {
+            calendarEl = $('#calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                //@*initialView: 'dayGridMonth',
+                events: [
+                    {
+                        title: 'New Year',
+                        start: '2022-01-01',
+                        end: '2022-01-04'
+                    },
+                    {
+                        title: 'Meeting 1',
+                        start: '2022-01-04',
+                        end: '2022-01-05'
+                    },
+                    {
+                        title: 'Meeting 2',
+                        start: '2022-01-04',
+                        end: '2022-01-05'
+                    },
+                    {
+                        title: 'Meeting 3',
+                        start: '2022-01-04',
+                        end: '2022-01-05'
+                    },
+                    {
+                        start: '2021-12-25',
+                        end: '2021-12-27',
+                        rendering: 'background',
+                        allday: true,
+                        overlap: true,
+                        color: '#808080',
+                    },
+                    {
+                        start: '2022-01-01',
+                        end: '2022-01-03',
+                        rendering: 'background',
+                        allday: true,
+                        overlap: true,
+                        color: '#808080',
+                    },
+                    {
+                        start: '2022-01-08',
+                        end: '2022-01-10',
+                        rendering: 'background',
+                        allday: true,
+                        overlap: true,
+                        color: '#808080',
+                    },
+                    {
+                        start: '2022-01-15',
+                        end: '2022-01-17',
+                        rendering: 'background',
+                        allday: true,
+                        overlap: true,
+                        color: '#808080',
+                    },
+                    {
+                        start: '2022-01-22',
+                        end: '2022-01-24',
+                        rendering: 'background',
+                        allday: true,
+                        overlap: true,
+                        color: '#808080',
+                    },
+                    {
+                        start: '2022-01-29',
+                        end: '2022-01-31',
+                        rendering: 'background',
+                        allday: true,
+                        overlap: true,
+                        color: '#808080',
+                    },
+                    {
+                        start: '2022-02-05',
+                        end: '2022-02-07',
+                        rendering: 'background',
+                        allday: true,
+                        overlap: true,
+                        color: '#808080',
+                    },
+                ],*@
+                height: 700,
+                @*editable: true,
+                selectable: true,
+                unselectAuto: true,
+                select: function (startDate, endDate) {
+                    var start = new Date(startDate.format());
+                    var stop = new Date(endDate.format());
+                    stop = new Date(stop.setDate(stop.getDate() - 1));
+                    var start_date = start.toISOString().split('T')[0];
+                    var stop_date = stop.toISOString().split('T')[0];
+                    if (start_date === stop_date) {
+                        $('#taskmodal').modal();
+                        $('#start_date').val(start_date);
+                        $('#stop_date').val(stop_date);
+                    }
+                    else {
+                        $('#taskmodal').modal();
+                        $('#start_date').val(start_date);
+                        $('#stop_date').val(stop_date);
+                    }
+                }*@
+            });
+            calendar.render();
+        });
+
+        @*$('#btn_add_task').on('click', function () {
+            var start_task = $('#start_task').val();
+            var stop_task = $('#stop_task').val();
+            var task_job_id = $('#task_job_id').val();
+            var task_description = $('#task_description').val();
+
+            var console = true;
+            if (console === true) {
+                console.log("Start " + start_task);
+                console.log("Stop " + stop_task);
+                console.log("Job ID " + task_job_id);
+                console.log("Description " + task_description);
+            }
+
+            $('#calendar').FullCalendar('renderEvent', {
+                title: task_job_id,
+                start: start_task,
+                allDay: true
+            });
+
+            calendar.addEvent({
+                title: task_job_id,
+                start: date,
+                allDay: true
+            });
+
+            alert("Done");
+            calendar.render();
+
+        });*@
+
+    </script>
+}
