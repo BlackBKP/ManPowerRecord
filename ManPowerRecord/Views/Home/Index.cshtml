@@ -113,25 +113,30 @@
                     {
                         title: 'New Year',
                         start: '2022-01-01',
-                        end: '2022-01-04'
+                        end: '2022-01-04',
+                        allDay: true,
+                        editable: false
                     },
                     {
                         title: 'Meeting 1',
                         start: '2022-01-04',
-                        end: '2022-01-05'
+                        end: '2022-01-05',
+                        allDay: false,
                     },
                     {
                         title: 'Meeting 2',
                         start: '2022-01-04',
-                        end: '2022-01-05'
+                        end: '2022-01-05',
+                        allDay: false,
                     },
                     {
                         title: 'Meeting 3',
                         start: '2022-01-04',
-                        end: '2022-01-05'
+                        end: '2022-01-05',
+                        allDay: false,
                     },
                     {
-                        daysOfWeek: [0, 6], //Sundays and saturdays
+                        daysOfWeek: [0, 6],
                         display: "background",
                         color: "#808080",
                         overLap: true,
@@ -139,9 +144,10 @@
                     },
                 ],
                 height: 720,
-                dateClick: function (info) {
+                @*dateClick: function (info) {
                     alert('Date: ' + info.dateStr);
-                },
+                },*@
+                editable: true,
                 selectable: true,
                 select: function (info) {
                     alert('selected ' + info.startStr + ' to ' + info.endStr);
@@ -171,13 +177,11 @@
         });
 
         $('#btn_add_task').on('click', function () {
-
             var available = true;
             available = $('#start_task').val() !== null ? true : false;
             available = $('#stop_task').val() !== null ? true : false;
             available = $('#task_job_id').val() !== null ? true : false;
             available = $('#task_description').val() !== null ? true : false;
-
             if (available) {
                 calendar.addEvent({
                     title: $('#task_job_id').val(),
@@ -191,8 +195,6 @@
                 $('#task_job_id').val(null);
                 $('#task_description').val(null);
             }
-            
         });
-
     </script>
 }
