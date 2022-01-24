@@ -1,8 +1,16 @@
-﻿<div class="row pt-3">
+﻿@{ 
+    ViewData["Title"] = "Jobs";
+}
+<div class="row p-3">
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header">
                 <span class="card-title">Jobs</span>
+                <div class="card-tools">
+                    <button id="btn_create" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create Job
+                    </button>
+                </div>
             </div>
             <div class="card-body">
                 <table id="table_job" class="table table-sm table-bordered">
@@ -21,18 +29,102 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_job" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Job</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="job_number">Job Number</label>
+                        <input id="job_number" type="text" class="form-control" placeholder="JYY-XXXX" />
+                    </div>
+                    <div class="form-group">
+                        <label for="job_name">Job Name</label>
+                        <input id="job_name" type="text" class="form-control" placeholder="Job Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="job_description">Job Description</label>
+                        <input id="job_description" type="text" class="form-control" placeholder="Job Description" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sale_department">Sale Department</label>
+                        <select id="sale_department" class="form-control">
+                            <option value="" selected disabled>Please Select Department</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sale">Sale</label>
+                        <select id="sale" class="form-control">
+                            <option value="" selected disabled>Please Select Sale</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cost">Cost</label>
+                        <input id="cost" type="number" class="form-control" />
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-8 d-flex align-items-end">
+                            <div class="form-check">
+                                <input id="check_md" type="checkbox" class="form-check-input" />
+                                <label class="form-check-label">
+                                    Market Develop
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <input id="md_rate" type="number" placeholder="#.#" class="text-right form-control" />
+                        </div>
+                        <div class="col-1 d-flex align-items-end justify-content-center">
+                            <label>X</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-8 d-flex align-items-end">
+                            <div class="form-check">
+                                <input id="check_pd" type="checkbox" class="form-check-input" />
+                                <label class="form-check-label">
+                                    Product Develop
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <input id="pd_rate" type="number" placeholder="#.#" class="text-right form-control" />
+                        </div>
+                        <div class="col-1 d-flex align-items-end justify-content-center">
+                            <label>X</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts
 {
     <script type="text/javascript">
         $(document).ready(function () {
             $('#table_job').DataTable();
+            $('#btn_create').on('click', function () {
+                $('#modal_job').modal();
+            });
         });
     </script>
 }
