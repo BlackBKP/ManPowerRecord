@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ManPowerRecord.Controllers
 {
-    public class AdminController : Controller
+    public class HolidayController : Controller
     {
         public IActionResult Index()
         {

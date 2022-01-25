@@ -1,0 +1,59 @@
+﻿@{ 
+    ViewData["Title"] = "Holiday";
+}
+<div class="row p-3 d-flex align-items-center">
+    <div class="col-xl-12 p-0 m-0">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <span class="card-title">Holidays</span>
+            </div>
+            <div class="card-body">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{ 
+    <script type="text/javascript">
+        var calendar;
+        var calendarEl;
+        $(document).ready(function () {
+            calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'dayGridMonth,listMonth',
+                    center: 'title',
+                    right: 'prev,next'
+                },
+                events: [
+                    {
+                        title: 'New Year',
+                        start: '2022-01-01',
+                        end: '2022-01-04',
+                        allDay: true,
+                        editable: false
+                    },
+                    {
+                        daysOfWeek: [0, 6],
+                        display: "background",
+                        color: "#80808080",
+                        overLap: true,
+                        allDay: true
+                    },
+                ],
+                height: 650,
+                editable: true,
+                selectable: true,
+                select: function (info) {
+                    alert('selected ' + info.startStr + ' to ' + info.endStr);
+                },
+                eventClick: function (info) {
+                    $('#taskmodal').modal();
+                },
+            });
+            calendar.render();
+        });
+    </script>
+}
