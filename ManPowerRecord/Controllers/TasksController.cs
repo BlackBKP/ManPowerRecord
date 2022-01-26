@@ -26,6 +26,13 @@ namespace ManPowerRecord.Controllers
             return View();
         }
 
+        [HttpGet]
+        public JsonResult GetTasks()
+        {
+            List<TaskModel> tasks = TaskService.GetTasks();
+            return Json(tasks);
+        }
+
         [HttpPost]
         public JsonResult AddTask(string task_string)
         {
