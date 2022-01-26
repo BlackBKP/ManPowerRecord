@@ -45,6 +45,7 @@ namespace ManPowerRecord.Services
                         manpower = 0,
                         cost_per_manpower = 0,
                         ot_manpower = 0,
+                        status = data_reader["status"] != DBNull.Value ? data_reader["status"].ToString() : "",
                     };
                     jobs.Add(job);
                 }
@@ -59,8 +60,8 @@ namespace ManPowerRecord.Services
             this.Database = new ConnectDB();
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using(SqlCommand command = new SqlCommand("INSERT INTO Job(job_id, job_name, job_description, sale_department, sale, cost, md_rate, pd_rate) " +
-                                                      "VALUES(@job_id, @job_name, @job_description, @sale_department, @sale, @cost, @md_rate, @pd_rate)",connection))
+            using(SqlCommand command = new SqlCommand("INSERT INTO Job(job_id, job_name, job_description, sale_department, sale, cost, md_rate, pd_rate, status) " +
+                                                      "VALUES(@job_id, @job_name, @job_description, @sale_department, @sale, @cost, @md_rate, @pd_rate, @status)",connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;
@@ -72,6 +73,7 @@ namespace ManPowerRecord.Services
                 command.Parameters.AddWithValue("@cost", job.cost);
                 command.Parameters.AddWithValue("@md_rate", job.md_rate);
                 command.Parameters.AddWithValue("@pd_rate", job.pd_rate);
+                command.Parameters.AddWithValue("@status", "");
                 command.ExecuteNonQuery();
             }
             connection.Close();

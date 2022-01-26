@@ -19,5 +19,6 @@ namespace ManPowerRecord.Models
         public double manpower { get; set; }
         public double cost_per_manpower { get; set; }
         public double ot_manpower { get; set; }
+        public string status { get; set; }
     }
 }

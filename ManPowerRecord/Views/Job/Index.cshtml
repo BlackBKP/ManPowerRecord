@@ -16,9 +16,9 @@
                 <table id="table_job" class="table table-bordered w-100">
                     <thead>
                         <tr>
-                            <th>Job ID</th>
-                            <th>Job Name</th>
-                            <th>Job Description</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
                             <th>Sale Dep</th>
                             <th>Sale</th>
                             <th>Cost</th>
@@ -28,6 +28,7 @@
                             <th>Manpower</th>
                             <th>Cost/Manpower</th>
                             <th>OT Manpower</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -162,6 +163,7 @@
                     jobs[i].manpower,
                     jobs[i].cost_per_manpower,
                     jobs[i].ot_manpower,
+                    jobs[i].status,
                 ]);
             }
 
