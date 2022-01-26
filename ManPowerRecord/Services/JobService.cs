@@ -23,7 +23,7 @@ namespace ManPowerRecord.Services
             SqlConnection connection = Database.Connect();
             connection.Open();
 
-            string string_command = "select * from Job";
+            string string_command = "SELECT * FROM Job";
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
 
