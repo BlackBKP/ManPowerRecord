@@ -1,0 +1,228 @@
+﻿@{ 
+    ViewData["Title"] = "Working Hours";
+}
+<div class="row p-3">
+    <div class="col-xl-2 pb-3">
+        <button id="btn_create" type="button" class="btn btn-primary elevation-1">
+            <i class="fas fa-plus"></i> Add Working Hour(s)
+        </button>
+    </div>
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Working Hours</span>
+            </div>
+            <div class="card-body">
+                <table id="table_wh" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>Job ID</th>
+                            <th>Job Name</th>
+                            <th>Task ID</th>
+                            <th>Task Name</th>
+                            <th>Start Time</th>
+                            <th>Stop Time</th>
+                            <th>Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_wh" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Working Hour(s)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="user_id">User</label>
+                        <select id="user_id" class="form-control">
+                            <option value="">Please Select User</option>
+                            <option value="U0001">Korakod.P</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="working_date">Date</label>
+                        <input id="working_date" type="date" class="form-control" />
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="job_id">Job</label>
+                                <select id="job_id" class="form-control">
+                                    <option value="">Please Select Job</option>
+                                    <option value="J200001">Job 1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="task_id">Task</label>
+                                <select id="task_id" class="form-control">
+                                    <option value="">Please Select Task</option>
+                                    <option value="T0001">Task 1</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="start_time">Start Time</label>
+                                <input id="start_time" type="time" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="stop_time">Stop Time</label>
+                                <input id="stop_time" type="time" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Break</label>
+                    </div>
+                    <div class="form-group row d-flex align-items-baseline">
+                        <div class="col-2">
+                            <div class="form-check">
+                                <input id="lunch" type="checkbox" class="form-check-input" />
+                                <label for="lunch" class="form-check-label">Lunch</label>
+                            </div>
+                        </div>
+                        <div class="col-2 text-right">
+                            <label>From</label>
+                        </div>
+                        <div class="col-3">
+                            <input id="lunch_start" type="time" class="form-control" />
+                        </div>
+                        <div class="col-2 text-right">
+                            <label>To</label>
+                        </div>
+                        <div class="col-3">
+                            <input id="lunch_stop" type="time" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row d-flex align-items-baseline">
+                        <div class="col-2">
+                            <div class="form-check">
+                                <input id="break_evening" type="checkbox" class="form-check-input" />
+                                <label for="break_evening" class="form-check-label">Break(Evening)</label>
+                            </div>
+                        </div>
+                        <div class="col-2 text-right">
+                            <label>From</label>
+                        </div>
+                        <div class="col-3">
+                            <input id="break_start" type="time" class="form-control" />
+                        </div>
+                        <div class="col-2 text-right">
+                            <label>To</label>
+                        </div>
+                        <div class="col-3">
+                            <input id="break_stop" type="time" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Note</label>
+                        <input id="note" type="text" class="form-control" placeholder="Note"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn_save" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#table_wh').DataTable();
+        });
+
+        $('#btn_create').on('click', function () {
+            AddWorkingHours();
+        });
+
+        function AddWorkingHours() {
+            $('#modal_wh').modal();
+
+            $('#user_id').val();
+            var today = moment().format('YYYY-MM-DD');
+            $('#working_date').val(today);
+            $('#job_id').val();
+            $('#task_id').val();
+            $('#start_time').val("08:30");
+            $('#stop_time').val("17:30");
+            $('#lunch').prop('checked', true);
+            $('#lunch_start').val("12:00");
+            $('#lunch_stop').val("13:00");
+            $('#break_evening').prop('checked', true);
+            $('#break_start').val("17:30");
+            $('#break_stop').val("18:30");
+            $('#note').val();
+        };
+
+        $('#btn_save').on('click', function () {
+
+            var user_id = $('#user_id').val();
+            var working_date = $('#working_date').val();
+            var job_id = $('#job_id').val();
+            var task_id = $('#task_id').val();
+            var start_time = $('#start_time').val();
+            var stop_time = $('#stop_time').val();
+
+            var lunch = $('#lunch').attr("checked") ? 1 : 0;
+            var lunch_start = $('#lunch_start').val();
+            var lunch_stop = $('#lunch_stop').val();
+
+            var break_evening = $('#break_evening').attr("checked") ? 1 : 0;
+            var break_start = $('#break_start').val();
+            var break_stop = $('#break_stop').val();
+
+            var note = $('#note').val();
+
+            var debug = true;
+            if (debug) {
+                console.log("User ID: " + user_id);
+                console.log("Working Date: " + working_date);
+                console.log("Job ID: " + job_id);
+                console.log("Task ID: " + task_id);
+                console.log("Start Time: " + start_time);
+                console.log("Stop Time: " + stop_time);
+
+                console.log("Lunch: " + lunch);
+                console.log("Lunch Start: " + lunch_start);
+                console.log("Lunch Stop: " + lunch_stop);
+
+                console.log("Break: " + break_evening);
+                console.log("Break Start: " + break_start);
+                console.log("Break Stop: " + break_stop);
+
+                console.log("Note: " + note);
+            }
+
+            var working_hours = 0;
+            var overtimes = 0;
+
+        });
+      
+    </script>
+}
