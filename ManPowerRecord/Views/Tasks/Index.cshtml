@@ -1,0 +1,137 @@
+﻿@{ 
+    ViewData["Title"] = "Tasks";
+}
+<div class="row p-3">
+    <div class="col-xl-2 pb-3">
+        <button id="btn_create" type="button" class="btn btn-primary elevation-1">
+            <i class="fas fa-plus"></i> Create Task
+        </button>
+    </div>
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Tasks</span>
+            </div>
+            <div class="card-body">
+                <table id="table_tasks" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Job ID</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_task" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="job_id">Job ID</label>
+                        <select id="job_id" class="form-control">
+                            <option value="" selected disabled>Please Select Job</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task_id">Task ID</label>
+                        <input id="task_id" type="text" class="form-control" placeholder="Task ID" />
+                    </div>
+                    <div class="form-group">
+                        <label for="task_name">Task Name</label>
+                        <input id="task_name" type="text" class="form-control" placeholder="Task Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="task_description">Task Description</label>
+                        <input id="task_description" type="text" class="form-control" placeholder="Task Description" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn_save" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{ 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            table = $('#table_tasks').DataTable();
+        });
+
+        $('#btn_create').on('click', function () {
+            CreateTask();
+        });
+
+        function CreateTask() {
+            $('#modal_task').modal();
+            $('#job_id').val();
+            $('#task_id').val();
+            $('#task_name').val();
+            $('#task_description').val();
+        };
+
+        $('#btn_save').on('click', function () {
+            SaveTask();
+        });
+
+        function SaveTask() {
+
+            var job_id = $('#job_id').val();
+            var task_id = $('#task_id').val();
+            var task_name = $('#task_name').val();
+            var task_description = $('#task_description').val();
+
+            job_id = job_id !== null ? job_id : "";
+
+            var debug = true;
+            if (debug) {
+                console.log("Job ID: " + job_id);
+                console.log("Task ID: " + task_id);
+                console.log("Task Name: " + task_name);
+                console.log("Task Description: " + task_description);
+            }
+
+            var task_string = JSON.stringify({
+                "job_id": job_id,
+                "task_id": task_id,
+                "task_name": task_name,
+                "task_description": task_description
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddTask", "Tasks")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    task_string
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        };
+
+    </script>
+}
