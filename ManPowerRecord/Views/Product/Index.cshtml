@@ -1,0 +1,67 @@
+﻿@{ 
+    ViewData["Title"] = "Brands";
+}
+<div class="row p-3">
+    <div class="col-xl-2 pb-3">
+        <button id="btn_create" class="btn btn-primary elevation-1">
+            <i class="fas fa-plus"></i> Create Brand
+        </button>
+    </div>
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Brands</span>
+            </div>
+            <div class="card-body">
+                <table id="table_products" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Brand ID</th>
+                            <th>Brand Name</th>
+                            <th>Total Product(s)</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            GetBrands();
+        });
+
+        async function GetBrands() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetBrands", "Product")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { },
+                success: function (response) {
+                    GenerateTable(response);
+                }
+            });
+        };
+
+        var table;
+        function GenerateTable(brands) {
+            var datas = [];
+
+            for (var i = 0; i < brands.length; i++) {
+                datas.push([
+                    brands[i].brand_id,
+                    brands[i].brand_name,
+                    0
+                ]);
+            }
+
+            table = $('#table_products').DataTable({
+                data: datas,
+            });
+        }
+
+    </script>
+}
