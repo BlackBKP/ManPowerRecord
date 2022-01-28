@@ -20,7 +20,6 @@ namespace ManPowerRecord.Services
         public List<TaskModel> GetTasks()
         {
             List<TaskModel> tasks = new List<TaskModel>();
-            this.Database = new ConnectDB();
             SqlConnection connection = Database.Connect();
             connection.Open();
 
@@ -51,7 +50,6 @@ namespace ManPowerRecord.Services
 
         public string CreateTask(TaskModel task)
         {
-            this.Database = new ConnectDB();
             SqlConnection connection = Database.Connect();
             connection.Open();
             using(SqlCommand command = new SqlCommand("INSERT INTO Tasks(task_id, task_name, task_description, job_id, status) " +
