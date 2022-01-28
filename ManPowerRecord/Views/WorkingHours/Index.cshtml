@@ -18,14 +18,19 @@
                         <tr>
                             <th>Date</th>
                             <th>User ID</th>
-                            <th>User Name</th>
                             <th>Job ID</th>
-                            <th>Job Name</th>
                             <th>Task ID</th>
-                            <th>Task Name</th>
                             <th>Start Time</th>
                             <th>Stop Time</th>
+                            <th>Lunch</th>
+                            <th>Lunch Start</th>
+                            <th>Lunch Stop</th>
+                            <th>Break</th>
+                            <th>Break_Start</th>
+                            <th>Break_Stop</th>
+                            <th>Note</th>
                             <th>Hours</th>
+                            <th>Hours(OT)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -154,8 +159,56 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#table_wh').DataTable();
+            GetWorkingHours();
         });
+
+        function GetWorkingHours() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetWorkingHours", "WorkingHours")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                },
+                success: function (response) {
+                    GenerateTable(response);
+                }
+            });
+        };
+
+        var table;
+        function GenerateTable(whs) {
+            var datas = [];
+            for (var i = 0; i < whs.length; i++) {
+
+                var hours = 0;
+                var overtimes = 0;
+
+                datas.push([
+                    whs[i].working_date,
+                    whs[i].user_id,
+                    whs[i].job_id,
+                    whs[i].task_id,
+                    whs[i].start_time,
+                    whs[i].stop_time,
+                    whs[i].lunch,
+                    whs[i].lunch_start,
+                    whs[i].lunch_stop,
+                    whs[i].break_evening,
+                    whs[i].break_start,
+                    whs[i].break_stop,
+                    whs[i].note,
+                    hours,
+                    overtimes,
+                ]);
+            }
+
+            @*if (table !== null)
+                table.DataTable().destroy();*@
+
+            table = $('#table_wh').DataTable({
+                data : datas,
+            });
+        };
 
         $('#btn_create').on('click', function () {
             AddWorkingHours();
@@ -189,11 +242,11 @@
             var start_time = $('#start_time').val();
             var stop_time = $('#stop_time').val();
 
-            var lunch = $('#lunch').attr("checked") ? 1 : 0;
+            var lunch = $('#lunch').prop("checked") ? 1 : 0;
             var lunch_start = $('#lunch_start').val();
             var lunch_stop = $('#lunch_stop').val();
 
-            var break_evening = $('#break_evening').attr("checked") ? 1 : 0;
+            var break_evening = $('#break_evening').prop("checked") ? 1 : 0;
             var break_start = $('#break_start').val();
             var break_stop = $('#break_stop').val();
 
@@ -219,10 +272,35 @@
                 console.log("Note: " + note);
             }
 
-            var working_hours = 0;
-            var overtimes = 0;
+            var wh_string = JSON.stringify({
+                "user_id": user_id,
+                "working_date": working_date,
+                "job_id": job_id,
+                "task_id": task_id,
+                "start_time": start_time,
+                "stop_time": stop_time,
+                "lunch": lunch,
+                "lunch_start": lunch_start,
+                "lunch_stop": lunch_stop,
+                "break_evening": break_evening,
+                "break_start": break_start,
+                "break_stop": break_stop,
+                "note": note,
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddWorkingHours", "WorkingHours")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    wh_string
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
 
         });
-      
+
     </script>
 }
