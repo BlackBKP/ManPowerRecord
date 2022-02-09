@@ -28,6 +28,7 @@ namespace ManPowerRecord.Controllers
         public JsonResult GetWorkingHours()
         {
             List<WorkingHoursModel> whs = WorkingHoursService.GetWorkingHours();
+            whs = whs.OrderByDescending(w => w.working_date).ToList();
             return Json(whs);
         }
 
