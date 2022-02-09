@@ -29,11 +29,58 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_user" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="user_id">User ID</label>
+                        <input id="user_id" type="text" class="form-control" placeholder="User ID" />
+                    </div>
+                    <div class="form-group">
+                        <label for="user_name">User Name</label>
+                        <input id="user_name" type="text" class="form-control" placeholder="User Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select id="department" class="form-control">
+                            <option value="" selected disabled>Please Select Department</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select id="role" class="form-control">
+                            <option value="" selected disabled>Please Select Role</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn_save" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts
 {
     <script type="text/javascript">
         $(document).ready(function () {
             $('#table_user').DataTable();
         });
+
+        $('#btn_add').on('click', function () {
+            $('#modal_user').modal();
+        });
+
     </script>
 }

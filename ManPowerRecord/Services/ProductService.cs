@@ -45,6 +45,23 @@ namespace ManPowerRecord.Services
             return brands;
         }
 
+        public string AddBrand(BrandModel brand)
+        {
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+            using (SqlCommand command = new SqlCommand("INSERT INTO Brand(brand_id, brand_name) " +
+                                                      "VALUES(@brand_id, @brand_name)", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@brand_id", brand.brand_id);
+                command.Parameters.AddWithValue("@brand_name", brand.brand_name);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+            return "Success";
+        }
+
         public List<ProductModel> GetProducts()
         {
             List<ProductModel> products = new List<ProductModel>();
@@ -74,6 +91,26 @@ namespace ManPowerRecord.Services
 
             connection.Close();
             return products;
+        }
+
+        public string AddProduct(ProductModel product)
+        {
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+            using (SqlCommand command = new SqlCommand("INSERT INTO Product(product_id, product_name, brand_id, product_price, product_unit) " +
+                                                      "VALUES(@product_id, @product_name, @brand_id, @product_price, @product_unit)", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@product_id", product.product_id);
+                command.Parameters.AddWithValue("@product_name", product.product_name);
+                command.Parameters.AddWithValue("@brand_id", product.brand_id);
+                command.Parameters.AddWithValue("@product_price", product.product_price);
+                command.Parameters.AddWithValue("@product_unit", product.product_unit);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+            return "Success";
         }
     }
 }

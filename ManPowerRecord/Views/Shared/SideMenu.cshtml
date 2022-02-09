@@ -10,14 +10,21 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                <li class="nav-item" hidden>
+                    <a class="nav-link" asp-controller="Home" asp-action="Test">
                         <i class="nav-icon fas fa-home"></i>
-                        <p>Home</p>
+                        <p>Test</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        <i class="nav-icon fas fa-calendar-alt"></i>
+                        <p>Calendar</p>
+                    </a>
+                </li>
+
+                <li class="nav-item" hidden>
                     <a class="nav-link" asp-controller="Holiday" asp-action="Index">
                         <i class="nav-icon fas fa-home"></i>
                         <p>Holiday</p>

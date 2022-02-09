@@ -26,6 +26,36 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_brand" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Brand</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="brand_id">Brand ID</label>
+                        <input id="brand_id" type="text" class="form-control" placeholder="Brand ID" />
+                    </div>
+                    <div class="form-group">
+                        <label for="brand_name">Brand Name</label>
+                        <input id="brand_name" type="text" class="form-control" placeholder="Brand Name" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn_save" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts
 {
     <script type="text/javascript">
@@ -62,6 +92,41 @@
                 data: datas,
             });
         }
+
+        $('#btn_create').on('click', function () {
+            $('#modal_brand').modal();
+            $('#brand_id').val();
+            $('#brand_name').val();
+        });
+
+        $('#btn_save').on('click', function () {
+            var brand_id = $('#brand_id').val();
+            var brand_name = $('#brand_name').val();
+
+            var debug = true;
+            if (debug) {
+                console.log("Brand ID: " + brand_id);
+                console.log("Brand Name: " + brand_name);
+            }
+
+            var brand_string = JSON.stringify({
+                "brand_id": brand_id,
+                "brand_name": brand_name,
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddBrand", "Product")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    brand_string
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+
+        });
 
     </script>
 }
