@@ -1,5 +1,8 @@
-﻿using ManPowerRecord.Models;
+﻿using ManPowerRecord.Interfaces;
+using ManPowerRecord.Models;
+using ManPowerRecord.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,18 +13,44 @@ namespace ManPowerRecord.Controllers
 {
     public class HomeController : Controller
     {
+        IWorkingHours WorkingHoursService;
+
+        public HomeController()
+        {
+            this.WorkingHoursService = new WorkingHoursService();
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
+        public JsonResult GetWorkingHours()
+        {
+            List<WorkingHoursModel> whs = WorkingHoursService.GetWorkingHours();
+            whs = whs.OrderByDescending(w => w.working_date).ToList();
+            return Json(whs);
+        }
+
+        [HttpPost]
+        public JsonResult AddWorkingHours(string wh_string)
+        {
+            WorkingHoursModel wh = JsonConvert.DeserializeObject<WorkingHoursModel>(wh_string);
+            var result = WorkingHoursService.AddWorkingHours(wh);
+            return Json(result);
+        }
+
         public List<EventModel> GetHolidays()
         {
             List<EventModel> holidays = new List<EventModel>();
-
-
-
             return holidays;
+        }
+
+        public IActionResult Test()
+        {
+            ViewData["Title"] = "Test";
+            return View();
         }
 
         public IActionResult About()
