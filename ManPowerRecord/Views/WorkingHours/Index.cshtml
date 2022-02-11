@@ -190,14 +190,6 @@
         function GenerateTable(whs) {
             var datas = [];
             for (var i = 0; i < whs.length; i++) {
-                var hours = 0;
-                var overtimes = 0;
-                var minutes = GetTotalMinutes(whs[i].start_time, whs[i].stop_time);
-                var hh = Math.floor(minutes / 60);
-                var mm = minutes - (hh * 60);
-                hours = hh + "Hrs";
-                if (mm > 0)
-                    hours += " " + mm + "Min";
                 datas.push([
                     whs[i].working_date.split("T")[0],
                     whs[i].user_id,
@@ -208,9 +200,9 @@
                     whs[i].lunch,
                     whs[i].dinner,
                     whs[i].note,
-                    hours,
-                    overtimes,
-                    0 //OT3.0
+                    whs[i].normal,
+                    whs[i].ot1_5,
+                    whs[i].ot3_0
                 ]);
             }
 

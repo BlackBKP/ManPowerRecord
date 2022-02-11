@@ -12,10 +12,13 @@ namespace ManPowerRecord.Models
         public DateTime working_date { get; set; }
         public string job_id { get; set; }
         public string task_id { get; set; }
-        public string start_time { get; set; }
-        public string stop_time { get; set; }
+        public TimeSpan start_time { get; set; }
+        public TimeSpan stop_time { get; set; }
         public bool lunch { get; set; }
         public bool dinner { get; set; }
         public string note { get; set; }
+        public TimeSpan normal { get; set; }
+        public TimeSpan ot1_5 { get; set; }
+        public TimeSpan ot3_0 { get; set; }
     }
 }

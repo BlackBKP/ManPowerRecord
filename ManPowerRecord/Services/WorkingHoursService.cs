@@ -38,8 +38,8 @@ namespace ManPowerRecord.Services
                         working_date = data_reader["working_date"] != DBNull.Value ? Convert.ToDateTime(data_reader["working_date"]) : default(DateTime),
                         job_id = data_reader["job_id"] != DBNull.Value ? data_reader["job_id"].ToString() : "",
                         task_id = data_reader["task_id"] != DBNull.Value ? data_reader["task_id"].ToString() : "",
-                        start_time = data_reader["start_time"] != DBNull.Value ? data_reader["start_time"].ToString() : "",
-                        stop_time = data_reader["stop_time"] != DBNull.Value ? data_reader["stop_time"].ToString() : "",
+                        start_time = data_reader["start_time"] != DBNull.Value ? TimeSpan.Parse(data_reader["start_time"].ToString()) : default(TimeSpan),
+                        stop_time = data_reader["stop_time"] != DBNull.Value ? TimeSpan.Parse(data_reader["stop_time"].ToString()) : default(TimeSpan),
                         lunch = data_reader["lunch"] != DBNull.Value ? Convert.ToBoolean(data_reader["lunch"]) : true,
                         dinner = data_reader["dinner"] != DBNull.Value ? Convert.ToBoolean(data_reader["dinner"]) : true,
                         note = data_reader["note"] != DBNull.Value ? data_reader["note"].ToString() : "",
@@ -58,7 +58,7 @@ namespace ManPowerRecord.Services
             SqlConnection connection = Database.Connect();
             connection.Open();
             using(SqlCommand command = new SqlCommand("INSERT INTO WH2022(user_id, working_date, job_id, task_id, start_time, stop_time, lunch, dinner, note) " +
-                                                      "VALUES(@user_id, @working_date, @job_id, @task_id, @start_time, @stop_time, @lunch, @dinner, @note)", connection))
+                                                      "VALUES (@user_id, @working_date, @job_id, @task_id, @start_time, @stop_time, @lunch, @dinner, @note)", connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;
@@ -75,6 +75,42 @@ namespace ManPowerRecord.Services
             }
             connection.Close();
             return "Success";
-        } 
+        }
+
+        public string UpdateWorkingHours(WorkingHoursModel wh)
+        {
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+
+            using (SqlCommand command = new SqlCommand("UPDATE WH2022 SET " +
+                                                       "user_id = @user_id, " +
+                                                       "working_date = @working_date, " +
+                                                       "job_id = @job_id, " +
+                                                       "task_id = @task_id, " +
+                                                       "start_time = @start_time, " +
+                                                       "stop_time = @stop_time, " +
+                                                       "lunch = @lunch, " +
+                                                       "dinner = @dinner, " +
+                                                       "note = @note " +
+                                                       "WHERE ind = @ind ", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@user_id", wh.user_id);
+                command.Parameters.AddWithValue("@working_date", wh.working_date);
+                command.Parameters.AddWithValue("@job_id", wh.job_id);
+                command.Parameters.AddWithValue("@task_id", wh.task_id);
+                command.Parameters.AddWithValue("@start_time", wh.start_time);
+                command.Parameters.AddWithValue("@stop_time", wh.stop_time);
+                command.Parameters.AddWithValue("@lunch", wh.lunch);
+                command.Parameters.AddWithValue("@dinner", wh.dinner);
+                command.Parameters.AddWithValue("@note", wh.note);
+                command.Parameters.AddWithValue("@ind", wh.index);
+                command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+            return "Success";
+        }
     }
 }

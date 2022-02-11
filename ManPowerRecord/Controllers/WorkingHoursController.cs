@@ -13,10 +13,12 @@ namespace ManPowerRecord.Controllers
     public class WorkingHoursController : Controller
     {
         IWorkingHours WorkingHoursService;
+        CalculateOvertimeService CalculateOTService;
 
         public WorkingHoursController()
         {
             this.WorkingHoursService = new WorkingHoursService();
+            this.CalculateOTService = new CalculateOvertimeService();
         }
 
         public IActionResult Index()
@@ -29,8 +31,14 @@ namespace ManPowerRecord.Controllers
         {
             List<WorkingHoursModel> whs = WorkingHoursService.GetWorkingHours();
             whs = whs.OrderByDescending(w => w.working_date).ToList();
+            for(int i = 0; i < whs.Count; i++)
+            {
+                whs[i] = CalculateOTService.CalculateOvertime(whs[i]);
+            }
             return Json(whs);
         }
+
+        
 
         [HttpPost]
         public JsonResult AddWorkingHours(string wh_string)

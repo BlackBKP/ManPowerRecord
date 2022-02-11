@@ -244,8 +244,8 @@
             var task_id = $('#task_id').val();
             var start_time = $('#start_time').val();
             var stop_time = $('#stop_time').val();
-            var lunch = $('#lunch').prop('checked', true) ? true : false;
-            var dinner = $('#dinner').prop('checked', true) ? true : false;
+            var lunch = $('#lunch').prop('checked');
+            var dinner = $('#dinner').prop('checked');
             var note = $('#note').val();
 
             var debug = true;
@@ -321,8 +321,8 @@
             $('#note').val(task.note);
         }
 
-        function AddWorkingHours(wh_string) {
-            $.ajax({
+        async function AddWorkingHours(wh_string) {
+            await $.ajax({
                 type: "POST",
                 url: '@Url.Action("AddWorkingHours", "Home")',
 	            contentType: 'application/x-www-form-urlencoded',
@@ -330,13 +330,16 @@
                     wh_string
                 },
                 success: function (response) {
-                    location.reload();
+                    if (response == "Success")
+                        location.reload();
+                    else
+                        alert(response);
                 }
             });
         }
 
-        function UpdateWorkingHours(wh_string) {
-            $.ajax({
+        async function UpdateWorkingHours(wh_string) {
+            await $.ajax({
                 type: "PATCH",
                 url: '@Url.Action("EditWorkingHours", "Home")',
 	            contentType: 'application/x-www-form-urlencoded',
@@ -344,7 +347,10 @@
                     wh_string
                 },
                 success: function (response) {
-                    location.reload();
+                    if (response == "Success")
+                        location.reload();
+                    else
+                        alert(response);
                 }
             });
         }

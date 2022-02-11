@@ -10,5 +10,6 @@ namespace ManPowerRecord.Interfaces
     {
         List<WorkingHoursModel> GetWorkingHours();
         string AddWorkingHours(WorkingHoursModel wh);
+        string UpdateWorkingHours(WorkingHoursModel wh);
     }
 }
