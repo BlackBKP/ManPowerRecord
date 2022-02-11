@@ -172,6 +172,57 @@
             });
         };
 
+        $('#table_job tbody').on('click', 'tr', function () {
+            EditJob(table.row(this).data());
+        });
+
+        function EditJob(data) {
+            $('#modal_job').modal();
+
+            var job_id = data[0];
+            var job_name = data[1];
+            var job_description = data[2];
+            var sale_department = data[3];
+            var sale = data[4];
+            var cost = data[5];
+            var md = data[6];
+            var pd = data[7];
+            var factor = data[8];
+            var manpower = data[9];
+            var cost_manpower = data[10];
+            var ot_manpower = data[11];
+            var status = data[12];
+
+            var debug = true;
+            if (debug) {
+                console.log("Job ID: " + job_id);
+                console.log("Job Name: " + job_name);
+                console.log("Job Description: " + job_description);
+                console.log("Sale Department: " + sale_department);
+                console.log("Sale: " + sale);
+                console.log("Cost: " + cost);
+                console.log("MD: " + md);
+                console.log("PD: " + pd);
+                console.log("Factor: " + factor);
+                console.log("Manpower: " + manpower);
+                console.log("Cost/Manpower: " + cost_manpower);
+                console.log("OT Manpower: " + ot_manpower);
+                console.log("Status: " + status);
+            }
+
+            $('#job_number').val(job_id);
+            $('#job_name').val(job_name);
+            $('#job_description').val(job_description);
+            $('#sale_department').val(sale_department);
+            $('#sale').val(sale);
+            $('#cost').val(cost);
+            $('#md').val(md);
+            $('#pd').val(pd);
+            $('#status').val(status);
+
+
+        }
+
         $('#btn_create').on('click', function () {
             CreateJob();
         });
