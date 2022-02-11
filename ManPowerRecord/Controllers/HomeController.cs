@@ -45,7 +45,8 @@ namespace ManPowerRecord.Controllers
         public JsonResult EditWorkingHours(string wh_string)
         {
             WorkingHoursModel wh = JsonConvert.DeserializeObject<WorkingHoursModel>(wh_string);
-            return Json("Done");
+            var result = WorkingHoursService.UpdateWorkingHours(wh);
+            return Json(result);
         }
 
         public List<EventModel> GetHolidays()
