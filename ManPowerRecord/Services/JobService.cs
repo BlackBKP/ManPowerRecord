@@ -79,5 +79,37 @@ namespace ManPowerRecord.Services
             connection.Close();
             return "Success";
         }
+
+        public string UpdateJob(JobModel job)
+        {
+            this.Database = new ConnectDB();
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+            using(SqlCommand command = new SqlCommand("UPDATE Job SET " +
+                "job_name = @job_name, " +
+                "job_description = @job_description, " +
+                "sale_department = @sale_department, " +
+                "sale = @sale, " +
+                "cost = @cost, " +
+                "md_rate = @md_rate, " +
+                "pd_rate = @pd_rate, " +
+                "status = @status WHERE job_id = @job_id", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@job_id", job.job_id.Replace("-", String.Empty));
+                command.Parameters.AddWithValue("@job_name", job.job_name);
+                command.Parameters.AddWithValue("@job_description", job.job_description);
+                command.Parameters.AddWithValue("@sale_department", job.sale_department);
+                command.Parameters.AddWithValue("@sale", job.sale);
+                command.Parameters.AddWithValue("@cost", job.cost);
+                command.Parameters.AddWithValue("@md_rate", job.md_rate);
+                command.Parameters.AddWithValue("@pd_rate", job.pd_rate);
+                command.Parameters.AddWithValue("@status", job.status);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+            return "Success";
+        }
     }
 }

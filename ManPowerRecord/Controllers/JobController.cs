@@ -38,5 +38,13 @@ namespace ManPowerRecord.Controllers
             var result = JobService.CreateJob(job);
             return Json(result);
         }
+
+        [HttpPatch]
+        public JsonResult UpdateJob(string job_string)
+        {
+            JobModel job = JsonConvert.DeserializeObject<JobModel>(job_string);
+            var result = JobService.UpdateJob(job);
+            return Json(result);
+        }
     }
 }

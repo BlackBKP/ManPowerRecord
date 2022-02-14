@@ -10,5 +10,6 @@ namespace ManPowerRecord.Interfaces
     {
         List<JobModel> GetAllJobs();
         string CreateJob(JobModel job);
+        string UpdateJob(JobModel job);
     }
 }
