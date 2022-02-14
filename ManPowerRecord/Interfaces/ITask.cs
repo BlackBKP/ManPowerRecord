@@ -9,7 +9,8 @@ namespace ManPowerRecord.Interfaces
     interface ITask
     {
         List<TaskModel> GetTasks();
-
         string CreateTask(TaskModel task);
+        string UpdateTask(TaskModel task);
+
     }
 }

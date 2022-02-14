@@ -61,6 +61,10 @@
                         <label for="task_description">Task Description</label>
                         <input id="task_description" type="text" class="form-control" placeholder="Task Description" />
                     </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <input id="status" type="text" class="form-control" placeholder="Status" />
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -75,6 +79,7 @@
 { 
     <script type="text/javascript">
 
+        var update = false;
         var table;
         $(document).ready(function () {
             GetTasks();
@@ -118,25 +123,44 @@
         });
 
         function CreateTask() {
+            update = false;
             $('#modal_task').modal();
             $('#job_id').val();
             $('#task_id').val();
             $('#task_name').val();
             $('#task_description').val();
+            $('#status').val();
         };
 
-        $('#btn_save').on('click', function () {
-            SaveTask();
+        $('#table_tasks tbody').on('click', 'tr', function () {
+            EditTask(table.row(this).data());
         });
 
-        function SaveTask() {
+        function EditTask(data) {
+            update = true;
 
+            var job_id = data[3];
+            var task_id = data[0];
+            var task_name = data[1];
+            var task_description = data[2];
+            var status = data[4];
+
+            $('#modal_task').modal();
+            $('#job_id').val(job_id);
+            $('#task_id').val(task_id);
+            $('#task_name').val(task_name);
+            $('#task_description').val(task_description);
+            $('#status').val(status);
+        }
+
+        $('#btn_save').on('click', function () {
             var job_id = $('#job_id').val();
             var task_id = $('#task_id').val();
             var task_name = $('#task_name').val();
             var task_description = $('#task_description').val();
-
+            var status = $('#status').val();
             job_id = job_id !== null ? job_id : "";
+            status = (status === null) ? "" : status;
 
             var debug = true;
             if (debug) {
@@ -144,15 +168,26 @@
                 console.log("Task ID: " + task_id);
                 console.log("Task Name: " + task_name);
                 console.log("Task Description: " + task_description);
+                console.log("Status: " + status);
             }
 
             var task_string = JSON.stringify({
                 "job_id": job_id,
                 "task_id": task_id,
                 "task_name": task_name,
-                "task_description": task_description
+                "task_description": task_description,
+                "status": status
             });
 
+            if (update) {
+                UpdateTask(task_string);
+            }
+            else {
+                CreateTask(task_string);
+            }
+        });
+
+        function CreateTask(task_string) {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("AddTask", "Tasks")',
@@ -161,7 +196,27 @@
                     task_string
                 },
                 success: function (response) {
-                    console.log(response);
+                    if (response == "Success")
+                        location.reload();
+                    else
+                        alert(response);
+                }
+            });
+        };
+
+        function UpdateTask(task_string) {
+            $.ajax({
+                type: "PATCH",
+                url: '@Url.Action("UpdateTask", "Tasks")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    task_string
+                },
+                success: function (response) {
+                    if (response == "Success")
+                        location.reload();
+                    else
+                        alert(response);
                 }
             });
         };

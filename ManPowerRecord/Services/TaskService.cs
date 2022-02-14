@@ -67,5 +67,29 @@ namespace ManPowerRecord.Services
             connection.Close();
             return "Success";
         }
+
+        public string UpdateTask(TaskModel task)
+        {
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+            using(SqlCommand command = new SqlCommand("UPDATE TASKS SET " +
+                "task_name = @task_name, " +
+                "task_description = @task_description, " +
+                "job_id = @job_id, " +
+                "status = @status " +
+                "WHERE task_id = @task_id", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@task_id", task.task_id);
+                command.Parameters.AddWithValue("@task_name", task.task_name);
+                command.Parameters.AddWithValue("@task_description", task.task_description);
+                command.Parameters.AddWithValue("@job_id", task.job_id);
+                command.Parameters.AddWithValue("@status", task.status);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+            return "Success";
+        }
     }
 }

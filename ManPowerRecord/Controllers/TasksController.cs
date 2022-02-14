@@ -40,5 +40,13 @@ namespace ManPowerRecord.Controllers
             var result = TaskService.CreateTask(task);
             return Json(result);
         }
+
+        [HttpPatch]
+        public JsonResult UpdateTask(string task_string)
+        {
+            TaskModel task = JsonConvert.DeserializeObject<TaskModel>(task_string);
+            var result = TaskService.UpdateTask(task);
+            return Json(result);
+        }
     }
 }
