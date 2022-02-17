@@ -13,7 +13,7 @@
                 <span class="card-title">Departments</span>
             </div>
             <div class="card-body">
-                <table id="table_department" class="table table-bordered">
+                <table id="table_department" class="table table-sm table-bordered w-100">
                     <thead>
                         <tr>
                             <th>Department</th>
@@ -61,9 +61,41 @@
 @section Scripts
 { 
     <script type="text/javascript">
+        var table;
+
         $(document).ready(function () {
-            $('#table_department').DataTable();
+            GetDepartments();
         });
+
+        function GetDepartments() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetDepartments", "Department")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                },
+                success: function (response) {
+                    GenerateDepartmentTable(response);
+                }
+            });
+        }
+
+        function GenerateDepartmentTable(deps) {
+            var datas = [];
+            for (var i = 0; i < deps.length; i++) {
+                datas.push([
+                    deps[i].department_name,
+                    deps[i].description
+                ]);
+            }
+
+            if (table !== undefined)
+                table.DataTable().destroy();
+
+            table = $('#table_department').DataTable({
+                data: datas,
+            });
+        }
 
         $('#btn_add').on('click', function () {
             $('#modal_department').modal();
