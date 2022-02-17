@@ -74,9 +74,43 @@
 @section Scripts
 {
     <script type="text/javascript">
+        var table;
+
         $(document).ready(function () {
-            $('#table_user').DataTable();
+            GetUsers();
         });
+
+        async function GetUsers() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetUsers", "User")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { },
+                success: function (response) {
+                    GenerateTable(response);
+                }
+            });
+        }
+
+        function GenerateTable(users) {
+            var datas = [];
+
+            if (table !== undefined)
+                table.DataTable().destroy();
+
+            for (var i = 0; i < users.length; i++) {
+                datas.push([
+                    users[i].user_id,
+                    users[i].user_name,
+                    users[i].department,
+                    users[i].role
+                ]);
+            }
+
+            $('#table_user').DataTable({
+                data: datas,
+            });
+        }
 
         $('#btn_add').on('click', function () {
             $('#modal_user').modal();
