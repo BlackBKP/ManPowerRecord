@@ -2,58 +2,100 @@
     ViewData["Title"] = "Holiday";
 }
 <div class="row p-3 d-flex align-items-center">
-    <div class="col-xl-12 p-0 m-0">
+    <div class="col-xl-2 pb-3">
+        <button id="btn_add" type="button" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Holiday
+        </button>
+    </div>
+
+    <div class="col-xl-12">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <span class="card-title">Holidays</span>
             </div>
             <div class="card-body">
-                <div id="calendar"></div>
+                <table id="table_holiday" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_holiday" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Holiday</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input id="date" type="date" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="holiday_name">Holiday Name</label>
+                        <input id="holiday_name" type="text" class="form-control" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn_save" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts
 { 
     <script type="text/javascript">
-        var calendar;
-        var calendarEl;
+        var table;
+
         $(document).ready(function () {
-            calendarEl = document.getElementById('calendar');
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'dayGridMonth,listMonth',
-                    center: 'title',
-                    right: 'prev,next'
+            GetHolidays();
+        });
+
+        function GetHolidays() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetHolidays", "Holiday")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
                 },
-                events: [
-                    {
-                        title: 'New Year',
-                        start: '2022-01-01',
-                        end: '2022-01-04',
-                        allDay: true,
-                        editable: false
-                    },
-                    {
-                        daysOfWeek: [0, 6],
-                        display: "background",
-                        color: "#80808080",
-                        overLap: true,
-                        allDay: true
-                    },
-                ],
-                height: 650,
-                editable: true,
-                selectable: true,
-                select: function (info) {
-                    alert('selected ' + info.startStr + ' to ' + info.endStr);
-                },
-                eventClick: function (info) {
-                    $('#taskmodal').modal();
-                },
+                success: function (response) {
+                    GenerateTable(response);
+                }
             });
-            calendar.render();
+        }
+
+        function GenerateTable(holidays) {
+            var datas = [];
+
+            for (var i = 0; i < holidays.length; i++) {
+                datas.push([
+                    holidays[i].date.split("T")[0],
+                    holidays[i].name
+                ]);
+            }
+
+            table = $('#table_holiday').DataTable({
+                data:datas,
+            });
+        }
+
+
+        $('#btn_add').on('click', function () {
+            $('#modal_holiday').modal();
         });
     </script>
 }
