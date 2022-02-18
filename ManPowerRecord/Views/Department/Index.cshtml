@@ -13,16 +13,19 @@
                 <span class="card-title">Departments</span>
             </div>
             <div class="card-body">
-                <table id="table_department" class="table table-sm table-bordered w-100">
+                <table id="table_department" class="table table-sm table-striped table-hover w-100">
                     <thead>
                         <tr>
                             <th>Department</th>
                             <th>Description</th>
                         </tr>
                     </thead>
-                    <tbody>
-
-                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Department</th>
+                            <th>Description</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -93,6 +96,11 @@
                 table.DataTable().destroy();
 
             table = $('#table_department').DataTable({
+                iDisplayLength: -1,
+                info: false,
+                paging: false,
+                ordering: false,
+                searching: false,
                 data: datas,
             });
         }
