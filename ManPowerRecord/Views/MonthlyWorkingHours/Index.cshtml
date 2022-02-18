@@ -1,0 +1,182 @@
+﻿@{ 
+    ViewData["Title"] = "Monthly Working Hours";
+}
+<div class="row px-3 pt-3">
+    <div class="col-xl-2 col-lg-4 col-md-4 pb-3">
+        <input id="whs_month" type="month" class="form-control"/>
+    </div>
+    <div class="col-xl-1 col-lg-4 col-md-4 pb-3">
+        <button id="btn_load" class="btn btn-primary form-control">
+            <i class="fas fa-sync"></i> Load
+        </button>
+    </div>
+    <div class="col-xl-1 col-lg-4 col-md-4 pb-3">
+        <button id="btn_print" type="button" class="btn btn-success form-control">
+            <i class="fas fa-file-excel"></i> Export
+        </button>
+    </div>
+</div>
+<div class="row px-3">
+    <div class="col-xl-8">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">2022 February - Working Hours Report</span>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <table id="table_whs" class="table table-sm table-hover text-center w-100">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Job</th>
+                                    <th>Start</th>
+                                    <th>Stop</th>
+                                    <th>Lunch</th>
+                                    <th>Break</th>
+                                    <th>Normal (Hours)</th>
+                                    <th>OT 1.5 (Hours)</th>
+                                    <th>OT 3.0 (Hours)</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Job</th>
+                                    <th>Start</th>
+                                    <th>Stop</th>
+                                    <th>Lunch</th>
+                                    <th>Break</th>
+                                    <th>Normal (Hours)</th>
+                                    <th>OT 1.5 (Hours)</th>
+                                    <th>OT 3.0 (Hours)</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Summary</span>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <table id="table_summary" class="table table-sm table-striped table-hover text-center w-100">
+                            <thead>
+                                <tr>
+                                    <th>Job</th>
+                                    <th>Normal</th>
+                                    <th>OT 1.5</th>
+                                    <th>OT 3.0</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <dl class="form-group row">
+                        <dt class="col-6 text-left">1. Normal</dt>
+                        <dd class="col-6 text-center">0</dd>
+                        <dt class="col-6 text-left">2. OT 1.5</dt>
+                        <dd class="col-6 text-center">0</dd>
+                        <dt class="col-6 text-left">3. OT 3.0</dt>
+                        <dd class="col-6 text-center">0</dd>
+                        <dt class="col-6 text-left">4. Total</dt>
+                        <dd class="col-6 text-center">0</dd>
+                    </dl>
+                </form>
+            </div>
+        </div>
+        <div class="info-box">
+            <i class="info-box-icon fas fa-clock"></i>
+            <div class="info-box-content">
+                <span class="info-box-number">Normal</span>
+                <span class="info-box-text">0 Hours</span>
+            </div>
+        </div>
+        <div class="info-box">
+            <i class="info-box-icon fas fa-clock"></i>
+            <div class="info-box-content">
+                <span class="info-box-number">OT 1.5</span>
+                <span class="info-box-text">0 Hours</span>
+            </div>
+        </div>
+        <div class="info-box">
+            <i class="info-box-icon fas fa-clock"></i>
+            <div class="info-box-content">
+                <span class="info-box-number">OT 3.0</span>
+                <span class="info-box-text">0 Hours</span>
+            </div>
+        </div>
+        <div class="info-box">
+            <i class="info-box-icon fas fa-clock"></i>
+            <div class="info-box-content">
+                <span class="info-box-number">Total</span>
+                <span class="info-box-text">0 Hours</span>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        var table;
+
+        $(document).ready(function () {
+            GetWorkingHours();
+        });
+
+        function GetWorkingHours() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetWorkingHours", "MonthlyWorkingHours")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                },
+                success: function (response) {
+                    GenerateTable(response);
+                }
+            });
+        }
+
+        function GenerateTable(whs) {
+            var datas = [];
+
+            for (var i = 0; i < whs.length; i++) {
+                datas.push([
+                    whs[i].working_date.split("T")[0],
+                    "", "","", "", "", 0, 0, 0
+                ]);
+            }
+
+            if (table !== undefined)
+                table.DataTable().destroy();
+
+            $('#table_whs').DataTable({
+                iDisplayLength: -1,
+                info: false,
+                paging: false,
+                searching: false,
+                ordering: false,
+                data: datas,
+                rowCallback: function (row, data) {
+                    var date = new Date(data[0].split("-")[0], data[0].split("-")[1], data[0].split("-")[2]);
+                    if (date.toString().split(" ")[0] == "Sat" || date.toString().split(" ")[0] == "Sun")
+                        $('td', row).addClass("bg-gray disabled");
+                }
+            });
+
+            $('#table_summary').DataTable({
+                iDisplayLength: -1,
+                info: false,
+                paging: false,
+                searching: false,
+                ordering: false,
+            });
+        }
+
+    </script>
+}
