@@ -10,13 +10,6 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                <li class="nav-item" hidden>
-                    <a class="nav-link" asp-controller="Home" asp-action="Test">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>Test</p>
-                    </a>
-                </li>
-
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Home" asp-action="Index">
                         <i class="nav-icon fas fa-calendar-alt"></i>
@@ -24,7 +17,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item" hidden>
+                <li class="nav-item">
                     <a class="nav-link" asp-controller="Holiday" asp-action="Index">
                         <i class="nav-icon fas fa-home"></i>
                         <p>Holiday</p>
@@ -53,6 +46,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" asp-controller="MonthlyWorkingHours" asp-action="Index">
+                        <i class="nav-icon fas fa-calendar-alt"></i>
+                        <p>Working Hours (Monthly)</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" asp-controller="Analysis" asp-action="Index">
                         <i class="nav-icon fas fa-home"></i>
                         <p>Analysis</p>
@@ -77,20 +77,6 @@
                     <a class="nav-link" asp-controller="User" asp-action="Index">
                         <i class="nav-icon fas fa-user"></i>
                         <p>User</p>
-                    </a>
-                </li>
-
-                <li class="nav-item" hidden>
-                    <a class="nav-link" asp-controller="Product" asp-action="Index">
-                        <i class="nav-icon fas fa-screwdriver"></i>
-                        <p>Brands</p>
-                    </a>
-                </li>
-
-                <li class="nav-item" hidden>
-                    <a class="nav-link" asp-controller="Product" asp-action="ViewProducts">
-                        <i class="nav-icon fas fa-screwdriver"></i>
-                        <p>Products</p>
                     </a>
                 </li>
 
