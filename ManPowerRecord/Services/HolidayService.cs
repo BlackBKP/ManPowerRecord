@@ -33,6 +33,7 @@ namespace ManPowerRecord.Services
                 {
                     HolidayModel holiday = new HolidayModel()
                     {
+                        no = data_reader["no"] != DBNull.Value ? Convert.ToInt32(data_reader["no"]) : default(Int32),
                         date = data_reader["date"] != DBNull.Value ? Convert.ToDateTime(data_reader["date"]) : default(DateTime),
                         name = data_reader["name"] != DBNull.Value ? data_reader["name"].ToString() : ""
                     };

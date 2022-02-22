@@ -7,6 +7,7 @@ namespace ManPowerRecord.Models
 {
     public class HolidayModel
     {
+        public int no { get; set; }
         public DateTime date { get; set; }
         public string name { get; set; }
     }
