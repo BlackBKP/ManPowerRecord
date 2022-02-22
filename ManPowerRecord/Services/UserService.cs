@@ -23,7 +23,7 @@ namespace ManPowerRecord.Services
             SqlConnection connection = Database.Connect();
             connection.Open();
 
-            string string_command = "SELECT * FROM [User]";
+            string string_command = "SELECT * FROM [Users]";
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
 
@@ -33,6 +33,7 @@ namespace ManPowerRecord.Services
                 {
                     UserModel user = new UserModel()
                     {
+                        user_no = data_reader["user_no"] != DBNull.Value ? Convert.ToInt32(data_reader["user_no"]) : default(Int32),
                         user_id = data_reader["user_id"] != DBNull.Value ? data_reader["user_id"].ToString() : "",
                         user_name = data_reader["user_name"] != DBNull.Value ? data_reader["user_name"].ToString() : "",
                         department = data_reader["department"] != DBNull.Value ? data_reader["department"].ToString() : "",

@@ -16,14 +16,16 @@
                 <table id="table_user" class="table table-sm table-striped table-hover w-100">
                     <thead>
                         <tr>
-                            <th>Emp ID</th>
+                            <th>No</th>
+                            <th>User ID</th>
                             <th>Name</th>
                             <th>Department</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>Emp ID</th>
+                            <th>No</th>
+                            <th>User ID</th>
                             <th>Name</th>
                             <th>Department</th>
                         </tr>
@@ -57,12 +59,6 @@
                         <label for="department">Department</label>
                         <select id="department" class="form-control">
                             <option value="" selected disabled>Please Select Department</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <select id="role" class="form-control">
-                            <option value="" selected disabled>Please Select Role</option>
                         </select>
                     </div>
                 </form>
@@ -104,6 +100,7 @@
 
             for (var i = 0; i < users.length; i++) {
                 datas.push([
+                    users[i].user_no,
                     users[i].user_id,
                     users[i].user_name,
                     users[i].department,
