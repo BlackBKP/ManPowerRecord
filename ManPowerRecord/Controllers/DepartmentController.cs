@@ -26,7 +26,7 @@ namespace ManPowerRecord.Controllers
         [HttpGet]
         public JsonResult GetDepartments()
         {
-            List<DepartmentModel> departments = DepartmentService.GetDepartments();
+            List<DepartmentModel> departments = DepartmentService.GetDepartments().OrderBy(o => o.department_id).ToList();
             return Json(departments);
         }
     }

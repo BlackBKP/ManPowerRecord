@@ -33,6 +33,7 @@ namespace ManPowerRecord.Services
                 {
                     DepartmentModel department = new DepartmentModel()
                     {
+                        department_id = data_reader["department_id"] != DBNull.Value ? Convert.ToInt32(data_reader["department_id"]) : default(int),
                         department_name = data_reader["department_name"] != DBNull.Value ? data_reader["department_name"].ToString() : "",
                         description = data_reader["description"] != DBNull.Value ? data_reader["description"].ToString() : ""
                     };
