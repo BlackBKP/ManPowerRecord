@@ -36,7 +36,6 @@ namespace ManPowerRecord.Services
                         user_id = data_reader["user_id"] != DBNull.Value ? data_reader["user_id"].ToString() : "",
                         user_name = data_reader["user_name"] != DBNull.Value ? data_reader["user_name"].ToString() : "",
                         department = data_reader["department"] != DBNull.Value ? data_reader["department"].ToString() : "",
-                        role = data_reader["role"] != DBNull.Value ? data_reader["role"].ToString() : "",
                     };
                     users.Add(user);
                 }

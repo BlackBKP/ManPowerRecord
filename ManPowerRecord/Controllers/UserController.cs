@@ -26,7 +26,7 @@ namespace ManPowerRecord.Controllers
         [HttpGet]
         public JsonResult GetUsers()
         {
-            List<UserModel> users = UserService.GetUsers();
+            List<UserModel> users = UserService.GetUsers().OrderBy(o => o.user_id).ToList();
             return Json(users);
         }
     }

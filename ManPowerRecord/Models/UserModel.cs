@@ -10,6 +10,5 @@ namespace ManPowerRecord.Models
         public string user_id { get; set; }
         public string user_name { get; set; }
         public string department { get; set; }
-        public string role { get; set; }
     }
 }
