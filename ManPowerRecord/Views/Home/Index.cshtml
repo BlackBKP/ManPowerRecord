@@ -117,8 +117,25 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            GetHolidays();
             GetWorkingHours();
         });
+
+        var holidays;
+        function GetHolidays() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetHolidays", "Holiday")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                },
+                success: function (response) {
+                    console.log("Holidays");
+                    console.log(response);
+                    holidays = response;
+                }
+            });
+        };
 
         function GetWorkingHours() {
             $.ajax({
@@ -138,7 +155,6 @@
         var calendar;
         var calendarEl;
         function GenerateCalendar(whs) {
-
             var datas = [];
             for (var i = 0; i < whs.length; i++) {
                 var start_date = new Date(whs[i].working_date);
@@ -164,9 +180,9 @@
                     }
                 );
             }
+
             console.log("Calendar Events Data");
             console.log(datas);
-
             calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -177,47 +193,43 @@
                 },
                 events: datas,
                 height: 650,
-                @*dateClick: function (info) {
-                    alert('Date: ' + info.dateStr);
-                },*@
                 editable: true,
                 selectable: true,
                 select: function (info) {
-                    //console.log(info);
                     var date_start = info.startStr;
                     var date_end = info.endStr;
-                    //console.log(date_start + " to " + date_end);
                     AddTask(date_start, date_end)
                 },
                 eventClick: function (info) {
-                    //console.log(info);
-                    //console.log(info.event.extendedProps);
                     EditTask(info.event);
-                    @*alert('Event: ' + info.event.title);
-                    var e = calendar.getEventById(info.event.id);
-                    e.remove();*@
                 },
-                @*editable: true,
-                selectable: true,
-                unselectAuto: true,*@
-                @*select: function (startDate, endDate) {
-                    var start = new Date(startDate.format());
-                    var stop = new Date(endDate.format());
-                    stop = new Date(stop.setDate(stop.getDate() - 1));
-                    var start_date = start.toISOString().split('T')[0];
-                    var stop_date = stop.toISOString().split('T')[0];
-                    if (start_date === stop_date) {
-                        $('#taskmodal').modal();
-                        $('#start_date').val(start_date);
-                        $('#stop_date').val(stop_date);
-                    }
-                    else {
-                        $('#taskmodal').modal();
-                        $('#start_date').val(start_date);
-                        $('#stop_date').val(stop_date);
-                    }
-                }*@
             });
+
+            var weekend = [
+                {
+                    daysOfWeek: [0, 6],
+                    display: 'background',
+                    color: "#CCCCCC",
+                    allDay: true
+                }
+            ];
+            calendar.addEventSource(weekend);
+
+            var e_holidays = [];
+            for (var i = 0; i < holidays.length; i++) {
+                e_holidays.push(
+                    {
+                        id: holidays[i].no,
+                        title: holidays[i].name,
+                        start: holidays[i].date.split("T")[0],
+                        display: 'background',
+                        color: "#FF9999",
+                        allDay: true
+                    }
+                );
+            }
+            calendar.addEventSource(e_holidays);
+
             calendar.render();
         }
 
