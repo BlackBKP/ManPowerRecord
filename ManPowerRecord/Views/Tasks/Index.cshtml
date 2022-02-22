@@ -17,12 +17,21 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Job ID</th>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Job ID</th>
                             <th>Status</th>
                         </tr>
                     </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Job ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -104,14 +113,17 @@
             for (var i = 0; i < tasks.length; i++) {
                 datas.push([
                     tasks[i].task_id,
+                    tasks[i].job_id,
                     tasks[i].task_name,
                     tasks[i].task_description,
-                    tasks[i].job_id,
                     tasks[i].status,
                 ]);
             }
 
             table = $('#table_tasks').DataTable({
+                iDisplayLength: -1,
+                info: false,
+                paging: false,
                 data: datas,
             });
         };

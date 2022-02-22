@@ -26,7 +26,7 @@
                 <span class="card-title">Working Hours</span>
             </div>
             <div class="card-body">
-                <table id="table_wh" class="table table-sm table-hover table-striped w-100">
+                <table id="table_wh" class="table table-sm table-bordered table-hover table-striped w-100">
                     <thead class="text-center">
                         <tr>
                             <th>Date</th>
@@ -43,6 +43,22 @@
                             <th>OT 3.0</th>
                         </tr>
                     </thead>
+                    <tfoot class="text-center">
+                        <tr>
+                            <th>Date</th>
+                            <th>User ID</th>
+                            <th>Job ID</th>
+                            <th>Task ID</th>
+                            <th>Start Time</th>
+                            <th>Stop Time</th>
+                            <th>Lunch</th>
+                            <th>Dinner</th>
+                            <th>Note</th>
+                            <th>Hours</th>
+                            <th>OT 1.5</th>
+                            <th>OT 3.0</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -207,7 +223,11 @@
                 table.DataTable().destroy();
 
             table = $('#table_wh').DataTable({
+                iDisplayLength: -1,
+                info: false,
+                paging: false,
                 data: datas,
+                order: [[0,"desc"]]
             });
         };
 

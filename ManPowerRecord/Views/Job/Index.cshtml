@@ -173,6 +173,9 @@
             }
 
             table = $('#table_job').DataTable({
+                iDisplayLength: -1,
+                info: false,
+                paging: false,
                 data: datas,
             });
         };
