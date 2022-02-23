@@ -6,24 +6,27 @@
         <input id="whs_month" type="month" class="form-control"/>
     </div>
     <div class="col-xl-1 col-lg-4 col-md-4 pb-3">
-        <button id="btn_load" class="btn btn-primary form-control">
+        <button id="btn_load" type="button" class="btn btn-primary form-control elevation-1">
             <i class="fas fa-sync"></i> Load
         </button>
     </div>
     <div class="col-xl-1 col-lg-4 col-md-4 pb-3">
-        <button id="btn_print" type="button" class="btn btn-success form-control">
+        <button id="btn_print" type="button" class="btn btn-success form-control elevation-1">
             <i class="fas fa-file-excel"></i> Export
         </button>
     </div>
 </div>
 <div class="row px-3">
     <div class="col-xl-8">
-        <div class="card">
+        <div class="card card-dark">
             <div class="card-header">
                 <span class="card-title">2022 February - Working Hours Report</span>
             </div>
             <div class="card-body">
                 <form>
+                    <div class="form-group">
+                        <span>Record of Working Hours in February 2022</span>
+                    </div>
                     <div class="form-group">
                         <table id="table_whs" class="table table-sm table-hover text-center w-100">
                             <thead>
@@ -59,15 +62,18 @@
         </div>
     </div>
     <div class="col-xl-4">
-        <div class="card">
+        <div class="card card-dark">
             <div class="card-header">
                 <span class="card-title">Summary</span>
             </div>
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <table id="table_summary" class="table table-sm table-striped table-hover text-center w-100">
-                            <thead>
+                        <span>Summary of Working Hours by Jobs</span>
+                    </div>
+                    <div class="form-group">
+                        <table id="table_summary" class="table table-sm table-striped table-hover w-100">
+                            <thead class="text-center">
                                 <tr>
                                     <th>Job</th>
                                     <th>Normal</th>
@@ -75,47 +81,30 @@
                                     <th>OT 3.0</th>
                                 </tr>
                             </thead>
+                            <tfoot class="text-center">
+                                <tr>
+                                    <th>Job</th>
+                                    <th>Normal</th>
+                                    <th>OT 1.5</th>
+                                    <th>OT 3.0</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
+                    <div class="form-group">
+                        <span>Total working hours</span>
+                    </div>
                     <dl class="form-group row">
-                        <dt class="col-6 text-left">1. Normal</dt>
-                        <dd class="col-6 text-center">0</dd>
-                        <dt class="col-6 text-left">2. OT 1.5</dt>
-                        <dd class="col-6 text-center">0</dd>
-                        <dt class="col-6 text-left">3. OT 3.0</dt>
-                        <dd class="col-6 text-center">0</dd>
-                        <dt class="col-6 text-left">4. Total</dt>
-                        <dd class="col-6 text-center">0</dd>
+                        <dt class="col-6 text-left pl-3">1. Normal</dt>
+                        <dd class="col-6 text-right pr-3">0 Hours</dd>
+                        <dt class="col-6 text-left pl-3">2. OT 1.5</dt>
+                        <dd class="col-6 text-right pr-3">0 Hours</dd>
+                        <dt class="col-6 text-left pl-3">3. OT 3.0</dt>
+                        <dd class="col-6 text-right pr-3">0 Hours</dd>
+                        <dt class="col-6 text-left pl-3">4. Total</dt>
+                        <dd class="col-6 text-right pr-3">0 Hours</dd>
                     </dl>
                 </form>
-            </div>
-        </div>
-        <div class="info-box">
-            <i class="info-box-icon fas fa-clock"></i>
-            <div class="info-box-content">
-                <span class="info-box-number">Normal</span>
-                <span class="info-box-text">0 Hours</span>
-            </div>
-        </div>
-        <div class="info-box">
-            <i class="info-box-icon fas fa-clock"></i>
-            <div class="info-box-content">
-                <span class="info-box-number">OT 1.5</span>
-                <span class="info-box-text">0 Hours</span>
-            </div>
-        </div>
-        <div class="info-box">
-            <i class="info-box-icon fas fa-clock"></i>
-            <div class="info-box-content">
-                <span class="info-box-number">OT 3.0</span>
-                <span class="info-box-text">0 Hours</span>
-            </div>
-        </div>
-        <div class="info-box">
-            <i class="info-box-icon fas fa-clock"></i>
-            <div class="info-box-content">
-                <span class="info-box-number">Total</span>
-                <span class="info-box-text">0 Hours</span>
             </div>
         </div>
     </div>

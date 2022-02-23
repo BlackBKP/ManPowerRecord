@@ -2,14 +2,14 @@
     ViewData["Title"] = "Engineer";
 }
 <div class="row p-3">
-    <div class="col-xl-2 pb-3">
+    <div class="col-xl-4 pb-3">
         <select id="year" class="form-control">
             <option value="">Please Select Year</option>
         </select>
     </div>
     <div class="col-xl-2 pb-3">
-        <button id="btn_filter" type="button" class="btn btn-primary form-control">
-            <i class="fas fa-filter"></i> Filter
+        <button id="btn_filter" type="button" class="btn btn-primary form-control elevation-1">
+            <i class="fas fa-sync"></i> Load
         </button>
     </div>
     <div class="col-xl-2" hidden>
@@ -41,9 +41,9 @@
         </div>
     </div>
     <div class="col-xl-12">
-        <div class="card">
+        <div class="card card-dark">
             <div class="card-header">
-                <span class="card-title">Table</span>
+                <span class="card-title">Scores</span>
             </div>
             <div class="card-body">
                 <table id="table_jobs" class="table table-sm table-striped table-hover text-center">

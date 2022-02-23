@@ -1,20 +1,20 @@
 ﻿<div class="row pt-3 px-3">
-    <div class="col-xl-3 pb-3">
+    <div class="col-xl-4 col-md-8 pb-3">
         <select id="job_id" class="form-control">
             <option value="">Please Select Job</option>
         </select>
     </div>
-    <div class="col-xl-2 pb-3">
-        <button id="btn_analysis" type="button" class="btn btn-primary form-control">
-            Analysis
+    <div class="col-xl-2 col-md-4 pb-3">
+        <button id="btn_analysis" type="button" class="btn btn-primary form-control elevation-1">
+            <i class="fas fa-search"></i> Analysis
         </button>
     </div>
 </div>
 <div class="row px-3">
     <div class="col-xl-6">
-        <div class="card">
+        <div class="card card-navy">
             <div class="card-header">
-                <span class="card-title">Chart 1</span>
+                <span class="card-title"><i class="fas fa-clock"></i> Working Hours Ratio</span>
             </div>
             <div class="card-body">
                 <div>
@@ -28,7 +28,7 @@
             </div>
             <div class="card-body">
                 <div>
-                    <canvas id="myChart2" height="300"></canvas>
+                    <canvas id="myChart2" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="card-body">
                 <div>
-                    <canvas id="myChart3" height="300"></canvas>
+                    <canvas id="myChart3" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
             </div>
             <div class="card-body">
                 <div>
-                    <canvas id="myChart4" height="300"></canvas>
+                    <canvas id="myChart4" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -63,17 +63,16 @@
         const myChart1 = new Chart(ctx1, {
             type: 'doughnut',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: ['Initiation', 'Planning', 'Execution', 'Management', 'Review'],
                 datasets: [{
                     label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    data: [12, 19, 3, 5, 2],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
@@ -81,7 +80,6 @@
                         'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
                     ],
                     borderWidth: 1
                 }]

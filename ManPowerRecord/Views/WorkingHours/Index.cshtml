@@ -2,31 +2,31 @@
     ViewData["Title"] = "Working Hours";
 }
 <div class="row p-3">
-    <div class="col-xl-2 pb-3">
-        <button id="btn_create" type="button" class="btn btn-primary form-control">
+    <div class="col-xl-2 col-lg-3 col-md-3 pb-3">
+        <button id="btn_create" type="button" class="btn btn-primary form-control elevation-1">
             <i class="fas fa-plus"></i> Add Working Hour(s)
         </button>
     </div>
-    <div class="col-xl-2 pb-3">
+    <div class="col-xl-2 col-lg-3 col-md-3 pb-3">
         <input id="month" type="month" class="form-control" />
     </div>
-    <div class="col-xl-2 pb-3">
-        <button id="btn_filter" type="button" class="btn btn-primary form-control">
-            Filter
+    <div class="col-xl-2 col-lg-3 col-md-3 pb-3">
+        <button id="btn_filter" type="button" class="btn btn-primary form-control elevation-1">
+            <i class="fas fa-sync"></i> Load
         </button>
     </div>
-    <div class="col-xl-2 pb-3">
-        <button id="btn_print" type="button" class="btn btn-success form-control">
+    <div class="col-xl-2 col-lg-3 col-md-3 pb-3">
+        <button id="btn_print" type="button" class="btn btn-success form-control elevation-1">
             <i class="fas fa-print"></i> Print
         </button>
     </div>
     <div class="col-xl-12">
-        <div class="card">
+        <div class="card card-dark">
             <div class="card-header">
                 <span class="card-title">Working Hours</span>
             </div>
             <div class="card-body">
-                <table id="table_wh" class="table table-sm table-bordered table-hover table-striped w-100">
+                <table id="table_wh" class="table table-sm table-hover table-striped w-100">
                     <thead class="text-center">
                         <tr>
                             <th>Date</th>
@@ -223,9 +223,6 @@
                 table.DataTable().destroy();
 
             table = $('#table_wh').DataTable({
-                iDisplayLength: -1,
-                info: false,
-                paging: false,
                 data: datas,
                 order: [[0,"desc"]]
             });

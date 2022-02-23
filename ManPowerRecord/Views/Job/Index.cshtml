@@ -2,19 +2,29 @@
     ViewData["Title"] = "Jobs";
 }
 <div class="row p-3">
-    <div class="col-xl-2 pb-3">
-        <button id="btn_create" type="button" class="btn btn-primary elevation-1">
+    <div class="col-xl-1 pb-3">
+        <button id="btn_create" type="button" class="btn btn-primary form-control elevation-1">
             <i class="fas fa-plus"></i> Create Job
         </button>
     </div>
+    <div class="col-xl-1 pb-3">
+        <button id="btn_import" type="button" class="btn btn-primary form-control elevation-1">
+            <i class="fas fa-upload"></i> Import
+        </button>
+    </div>
+    <div class="col-xl-1 pb-3">
+        <button id="btn_export" type="button" class="btn btn-primary form-control elevation-1">
+            <i class="fas fa-download"></i> Export
+        </button>
+    </div>
     <div class="col-xl-12">
-        <div class="card">
+        <div class="card card-dark">
             <div class="card-header">
                 <span class="card-title">Jobs</span>
             </div>
             <div class="card-body">
                 <table id="table_job" class="table table-sm table-hover table-striped w-100">
-                    <thead>
+                    <thead class="text-center">
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
@@ -31,6 +41,23 @@
                             <th>Status</th>
                         </tr>
                     </thead>
+                    <tfoot class="text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Sale Dep</th>
+                            <th>Sale</th>
+                            <th>Cost</th>
+                            <th>MD</th>
+                            <th>PD</th>
+                            <th>Factor</th>
+                            <th>Manpower</th>
+                            <th>Cost/Manpower</th>
+                            <th>OT Manpower</th>
+                            <th>Status</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -173,9 +200,6 @@
             }
 
             table = $('#table_job').DataTable({
-                iDisplayLength: -1,
-                info: false,
-                paging: false,
                 data: datas,
             });
         };

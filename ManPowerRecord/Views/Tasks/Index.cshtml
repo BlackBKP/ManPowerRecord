@@ -8,13 +8,13 @@
         </button>
     </div>
     <div class="col-xl-12">
-        <div class="card">
+        <div class="card card-dark">
             <div class="card-header">
                 <span class="card-title">Tasks</span>
             </div>
             <div class="card-body">
                 <table id="table_tasks" class="table table-sm table-striped table-hover w-100">
-                    <thead>
+                    <thead class="text-center">
                         <tr>
                             <th>ID</th>
                             <th>Job ID</th>
@@ -23,7 +23,7 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tfoot>
+                    <tfoot class="text-center">
                         <tr>
                             <th>ID</th>
                             <th>Job ID</th>
@@ -121,9 +121,6 @@
             }
 
             table = $('#table_tasks').DataTable({
-                iDisplayLength: -1,
-                info: false,
-                paging: false,
                 data: datas,
             });
         };
