@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="row px-3">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
         <div class="card card-dark">
             <div class="card-header">
                 <span class="card-title">2022 February - Working Hours Report</span>
@@ -25,21 +25,24 @@
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <span>Record of Working Hours in February 2022</span>
-                    </div>
-                    <div class="form-group">
-                        <table id="table_whs" class="table table-sm table-hover text-center w-100">
+                        <table id="table_whs" class="table table-sm compact table-hover border-bottom text-center w-100">
                             <thead>
                                 <tr>
                                     <th>Date</th>
                                     <th>Job</th>
                                     <th>Start</th>
                                     <th>Stop</th>
+                                    <th>Job</th>
+                                    <th>Start</th>
+                                    <th>Stop</th>
+                                    <th>Job</th>
+                                    <th>Start</th>
+                                    <th>Stop</th>
                                     <th>Lunch</th>
                                     <th>Break</th>
-                                    <th>Normal (Hours)</th>
-                                    <th>OT 1.5 (Hours)</th>
-                                    <th>OT 3.0 (Hours)</th>
+                                    <th>Normal</th>
+                                    <th>OT 1.5</th>
+                                    <th>OT 3.0</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -48,11 +51,17 @@
                                     <th>Job</th>
                                     <th>Start</th>
                                     <th>Stop</th>
+                                    <th>Job</th>
+                                    <th>Start</th>
+                                    <th>Stop</th>
+                                    <th>Job</th>
+                                    <th>Start</th>
+                                    <th>Stop</th>
                                     <th>Lunch</th>
                                     <th>Break</th>
-                                    <th>Normal (Hours)</th>
-                                    <th>OT 1.5 (Hours)</th>
-                                    <th>OT 3.0 (Hours)</th>
+                                    <th>Normal</th>
+                                    <th>OT 1.5</th>
+                                    <th>OT 3.0</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -61,7 +70,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-4">
+    <div class="col-xl-12">
         <div class="card card-dark">
             <div class="card-header">
                 <span class="card-title">Summary</span>
@@ -72,8 +81,8 @@
                         <span>Summary of Working Hours by Jobs</span>
                     </div>
                     <div class="form-group">
-                        <table id="table_summary" class="table table-sm table-striped table-hover w-100">
-                            <thead class="text-center">
+                        <table id="table_summary" class="table table-sm compact border table-striped table-hover text-center w-100">
+                            <thead>
                                 <tr>
                                     <th>Job</th>
                                     <th>Normal</th>
@@ -81,7 +90,7 @@
                                     <th>OT 3.0</th>
                                 </tr>
                             </thead>
-                            <tfoot class="text-center">
+                            <tfoot>
                                 <tr>
                                     <th>Job</th>
                                     <th>Normal</th>
@@ -113,13 +122,14 @@
 {
     <script type="text/javascript">
         var table;
+        var table_sum;
 
         $(document).ready(function () {
-            GetWorkingHours();
+            GetWorkingHours().then(() => GetWorkingHoursSummary());
         });
 
-        function GetWorkingHours() {
-            $.ajax({
+        async function GetWorkingHours() {
+            await $.ajax({
                 type: "GET",
                 url: '@Url.Action("GetWorkingHours", "MonthlyWorkingHours")',
 	            contentType: 'application/x-www-form-urlencoded',
@@ -137,33 +147,112 @@
             for (var i = 0; i < whs.length; i++) {
                 datas.push([
                     whs[i].working_date.split("T")[0],
-                    "", "","", "", "", 0, 0, 0
+                    whs[i].job_id,
+                    whs[i].start_time.substring(0, 5),
+                    whs[i].stop_time.substring(0, 5),
+                    "","","","","","",
+                    whs[i].lunch,
+                    whs[i].dinner,
+                    whs[i].normal.substring(0, 5),
+                    whs[i].ot1_5.substring(0, 5),
+                    whs[i].ot3_0.substring(0, 5)
                 ]);
             }
 
             if (table !== undefined)
                 table.DataTable().destroy();
 
-            $('#table_whs').DataTable({
+            table = $('#table_whs').DataTable({
                 iDisplayLength: -1,
                 info: false,
                 paging: false,
                 searching: false,
                 ordering: false,
                 data: datas,
+                columnDefs: [
+                    {
+                        targets: [0, 1, 4, 7, 10, 11, 12, 13],
+                        className: "border-left"
+                    },
+                    {
+                        targets: [14],
+                        className: "border-left border-right"
+                    }
+                ],
                 rowCallback: function (row, data) {
                     var date = new Date(data[0].split("-")[0], data[0].split("-")[1], data[0].split("-")[2]);
                     if (date.toString().split(" ")[0] == "Sat" || date.toString().split(" ")[0] == "Sun")
-                        $('td', row).addClass("bg-gray disabled");
+                        $('td', row).addClass("bg-gray disable");
+                    if (data[2] === "00:00")
+                        $('td:eq(2)', row).html("");
+                    if (data[3] === "00:00")
+                        $('td:eq(3)', row).html("");
+                    if (data[5] === "00:00")
+                        $('td:eq(5)', row).html("");
+                    if (data[6] === "00:00")
+                        $('td:eq(6)', row).html("");
+                    if (data[8] === "00:00")
+                        $('td:eq(8)', row).html("");
+                    if (data[9] === "00:00")
+                        $('td:eq(9)', row).html("");
+                    data[10] === true ? $('td:eq(10)', row).html("✓") : $('td:eq(10)', row).html("");
+                    data[11] === true ? $('td:eq(11)', row).html("✓") : $('td:eq(11)', row).html("");
+                    if (data[12] === "00:00")
+                        $('td:eq(12)', row).html("");
+                    if (data[13] === "00:00")
+                        $('td:eq(13)', row).html("");
+                    if (data[14] === "00:00")
+                        $('td:eq(14)', row).html("");
                 }
             });
+        }
 
-            $('#table_summary').DataTable({
+        async function GetWorkingHoursSummary() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetMonthlySummary", "MonthlyWorkingHours")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                },
+                success: function (response) {
+                    console.log(response);
+                    GenerateSummaryTable(response);
+                }
+            });
+        }
+
+        function GenerateSummaryTable(data) {
+            var datas = [];
+            for (var i = 0; i < data.length; i++) {
+                var normal_string = data[i].normal_hours + " Hours " + data[i].normal_min + " Min";
+                var ot1_5_string = data[i].ot1_5_hours + " Hours " + data[i].ot1_5_min + " Min";
+                var ot3_0_string = data[i].ot3_0_hours + " Hours " + data[i].ot3_0_min + " Min";
+                if (data[i].job_id !== "Total") {
+                    datas.push([
+                        data[i].job_id,
+                        normal_string,
+                        ot1_5_string,
+                        ot3_0_string,
+                    ]);
+                }
+            }
+
+            if (table_sum !== undefined)
+                table_sum.DataTable().destroy();
+
+            table_sum = $('#table_summary').DataTable({
                 iDisplayLength: -1,
                 info: false,
                 paging: false,
                 searching: false,
                 ordering: false,
+                data: datas,
+                columnDefs: [
+                    {
+                        targets: [1, 2, 3],
+                        className: "border-left"
+                    }
+                ]
             });
         }
 

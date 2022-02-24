@@ -2,13 +2,13 @@
     ViewData["Title"] = "Home";
 }
 <div class="row p-3">
-    @*<div class="col-xl-3 col-lg-3 col-md-4 pb-3">
-        <select class="form-control">
+    <div class="col-xl-3 col-lg-3 col-md-4 pb-3">
+        <select id="filter_job" class="form-control">
             <option>Please Select Job</option>
         </select>
     </div>
     <div class="col-xl-3 col-lg-3 col-md-4 pb-3">
-        <select class="form-control">
+        <select id="filter_task" class="form-control">
             <option>Please Select Task</option>
         </select>
     </div>
@@ -17,19 +17,30 @@
             <i class="fas fa-filter"></i> Filter
         </button>
     </div>
-
-    <div class="col-xl-2 col-lg-2 col-md-6 pb-3">
-        <input id="month" type="month" class="form-control" />
-    </div>
-    <div class="col-xl-2 col-lg-2 col-md-6 pb-3">
-        <button id="btn_print" type="button" class="btn btn-success form-control">
-            <i class="fas fa-print"></i> Print
-        </button>
-    </div>*@
-    <div class="col-12">
-        <div class="card">
+    <div class="col-xl-8">
+        <div class="card card-dark">
+            <div class="card-header">
+                <span class="card-title">Calendar</span>
+            </div>
             <div class="card-body">
                 <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card card-dark">
+            <div class="card-header">
+                <span class="card-title">Holidays</span>
+            </div>
+            <div class="card-body">
+                <table id="table_holiday" class="table table-sm compact table-hover table-striped w-100">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
@@ -117,36 +128,92 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            GetHolidays();
-            GetWorkingHours();
+            GetHolidays().then(() => GetWorkingHours());
+            GetJobs().then(() => GenerateJobFilterOptions()).then(() => GetTasks()).then(() => GenerateTasksFilterOptions());
+            $('#table_holiday').DataTable();
         });
 
-        var holidays;
-        function GetHolidays() {
-            $.ajax({
+        var jobs = [];
+        async function GetJobs() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobs", "Job")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                },
+                success: function (response) {
+                    console.log("Jobs");
+                    console.log(response);
+                    jobs = response;
+                }
+            });
+        };
+
+        function GenerateJobFilterOptions() {
+            $('#filter_job').empty();
+            var job_str = '<option value="" selected disabled>Please Select Job</option>';
+            for (var i = 0; i < jobs.length; i++) {
+                job_str += '<option value="' + jobs[i].job_id + '">' + jobs[i].job_name + '</option>';
+            }
+            $('#filter_job').append(job_str);
+        }
+
+        $('#filter_job').on('change', function () {
+            GenerateTasksFilterOptions();
+        });
+
+        var tasks = [];
+        async function GetTasks() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTasks", "Tasks")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                },
+                success: function (response) {
+                    console.log("Tasks");
+                    console.log(response);
+                    tasks = response;
+                }
+            });
+        };
+
+        function GenerateTasksFilterOptions() {
+            $('#filter_task').empty();
+            var task_str = '<option value="" selected disabled>Please Select Task</option>';
+            for (var i = 0; i < tasks.length; i++) {
+                if(tasks[i].job_id == $('#filter_job').val())
+                    task_str += '<option value="' + tasks[i].task_id + '">' + tasks[i].task_name + '</option>';
+            }
+            $('#filter_task').append(task_str);
+        }
+
+        var holidays = [];
+        async function GetHolidays() {
+            await $.ajax({
                 type: "GET",
                 url: '@Url.Action("GetHolidays", "Holiday")',
 	            contentType: 'application/x-www-form-urlencoded',
                 data: {
                 },
                 success: function (response) {
-                    console.log("Holidays");
-                    console.log(response);
+                    //console.log("Holidays");
+                    //console.log(response);
                     holidays = response;
                 }
             });
         };
 
-        function GetWorkingHours() {
-            $.ajax({
+        async function GetWorkingHours() {
+            await $.ajax({
                 type: "GET",
                 url: '@Url.Action("GetWorkingHours", "Home")',
 	            contentType: 'application/x-www-form-urlencoded',
                 data: {
                 },
                 success: function (response) {
-                    console.log("Working Hours Data");
-                    console.log(response);
+                    //console.log("Working Hours Data");
+                    //console.log(response);
                     GenerateCalendar(response);
                 }
             });
@@ -181,8 +248,8 @@
                 );
             }
 
-            console.log("Calendar Events Data");
-            console.log(datas);
+            //console.log("Calendar Events Data");
+            //console.log(datas);
             calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -192,7 +259,7 @@
                     right: 'prev,next'
                 },
                 events: datas,
-                height: 705,
+                height: 600,
                 editable: true,
                 selectable: true,
                 select: function (info) {
@@ -229,7 +296,6 @@
                 );
             }
             calendar.addEventSource(e_holidays);
-
             calendar.render();
         }
 
@@ -260,7 +326,7 @@
             var dinner = $('#dinner').prop('checked');
             var note = $('#note').val();
 
-            var debug = true;
+            var debug = false;
             if (debug) {
                 console.log("Add Task");
                 console.log("User ID -> " + user_id);

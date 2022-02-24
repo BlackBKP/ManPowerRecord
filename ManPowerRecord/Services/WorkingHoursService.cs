@@ -53,6 +53,42 @@ namespace ManPowerRecord.Services
             return whs;
         }
 
+        public List<WorkingHoursModel> GetWorkingHours(string year, string month)
+        {
+            List<WorkingHoursModel> whs = new List<WorkingHoursModel>();
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+
+            string string_command = "SELECT * FROM WH2022 WHERE working_date like '" + year + "-" + month + "%'";
+            SqlCommand command = new SqlCommand(string_command, connection);
+            SqlDataReader data_reader = command.ExecuteReader();
+
+            if (data_reader.HasRows)
+            {
+                while (data_reader.Read())
+                {
+                    WorkingHoursModel wh = new WorkingHoursModel()
+                    {
+                        index = data_reader["ind"] != DBNull.Value ? Convert.ToInt32(data_reader["ind"]) : default(Int32),
+                        user_id = data_reader["user_id"] != DBNull.Value ? data_reader["user_id"].ToString() : "",
+                        working_date = data_reader["working_date"] != DBNull.Value ? Convert.ToDateTime(data_reader["working_date"]) : default(DateTime),
+                        job_id = data_reader["job_id"] != DBNull.Value ? data_reader["job_id"].ToString() : "",
+                        task_id = data_reader["task_id"] != DBNull.Value ? data_reader["task_id"].ToString() : "",
+                        start_time = data_reader["start_time"] != DBNull.Value ? TimeSpan.Parse(data_reader["start_time"].ToString()) : default(TimeSpan),
+                        stop_time = data_reader["stop_time"] != DBNull.Value ? TimeSpan.Parse(data_reader["stop_time"].ToString()) : default(TimeSpan),
+                        lunch = data_reader["lunch"] != DBNull.Value ? Convert.ToBoolean(data_reader["lunch"]) : true,
+                        dinner = data_reader["dinner"] != DBNull.Value ? Convert.ToBoolean(data_reader["dinner"]) : true,
+                        note = data_reader["note"] != DBNull.Value ? data_reader["note"].ToString() : "",
+                    };
+                    whs.Add(wh);
+                }
+                data_reader.Close();
+            }
+
+            connection.Close();
+            return whs;
+        }
+
         public string AddWorkingHours(WorkingHoursModel wh)
         {
             SqlConnection connection = Database.Connect();

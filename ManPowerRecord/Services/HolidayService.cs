@@ -43,7 +43,7 @@ namespace ManPowerRecord.Services
             }
 
             connection.Close();
-            return holidays;
+            return holidays.OrderBy(o => o.date).ToList();
         }
     }
 }

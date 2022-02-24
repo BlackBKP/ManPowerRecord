@@ -2,9 +2,19 @@
     ViewData["Title"] = "Tasks";
 }
 <div class="row p-3">
-    <div class="col-xl-2 pb-3">
-        <button id="btn_create" type="button" class="btn btn-primary elevation-1">
+    <div class="col-xl-1 pb-3">
+        <button id="btn_create" type="button" class="btn btn-primary form-control elevation-1">
             <i class="fas fa-plus"></i> Create Task
+        </button>
+    </div>
+    <div class="col-xl-1 pb-3">
+        <button id="btn_import" type="button" class="btn btn-primary form-control elevation-1">
+            <i class="fas fa-upload"></i> Import
+        </button>
+    </div>
+    <div class="col-xl-1 pb-3">
+        <button id="btn_export" type="button" class="btn btn-primary form-control elevation-1">
+            <i class="fas fa-download"></i> Export
         </button>
     </div>
     <div class="col-xl-12">
@@ -13,7 +23,7 @@
                 <span class="card-title">Tasks</span>
             </div>
             <div class="card-body">
-                <table id="table_tasks" class="table table-sm table-striped table-hover w-100">
+                <table id="table_tasks" class="table table-sm compact border table-striped table-hover w-100">
                     <thead class="text-center">
                         <tr>
                             <th>ID</th>
@@ -122,6 +132,20 @@
 
             table = $('#table_tasks').DataTable({
                 data: datas,
+                columnDefs: [
+                    {
+                        targets: [1,2,3,4],
+                        className: "border-left"
+                    },
+                    {
+                        targets: [0],
+                        visible: false
+                    }
+                ],
+                rowCallback: function (row, data) {
+                    $('td:eq(0)', row).addClass("text-center");
+                    $('td:eq(3)', row).addClass("text-center");
+                }
             });
         };
 

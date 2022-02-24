@@ -25,7 +25,7 @@
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <table id="table_user" class="table table-sm table-striped table-hover w-100">
+                        <table id="table_user" class="table table-sm compact border table-striped table-hover w-100">
                             <thead class="text-center">
                                 <tr>
                                     <th>No</th>
@@ -34,6 +34,9 @@
                                     <th>Department</th>
                                 </tr>
                             </thead>
+                            <tbody>
+
+                            </tbody>
                             <tfoot class="text-center">
                                 <tr>
                                     <th>No</th>
@@ -51,10 +54,10 @@
 </div>
 
 <div class="modal fade" id="modal_user" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add User</h5>
+                <h5 id="modal_title" class="modal-title">Create User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -63,11 +66,11 @@
                 <form>
                     <div class="form-group">
                         <label for="user_id">User ID</label>
-                        <input id="user_id" type="text" class="form-control" placeholder="User ID" />
+                        <input id="user_id" type="text" class="form-control" placeholder="Firstname.L" />
                     </div>
                     <div class="form-group">
                         <label for="user_name">User Name</label>
-                        <input id="user_name" type="text" class="form-control" placeholder="User Name" />
+                        <input id="user_name" type="text" class="form-control" placeholder="Firstname Lastname" />
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
@@ -78,8 +81,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="btn_save" type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button id="btn_save" type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -91,6 +94,7 @@
         var table;
 
         $(document).ready(function () {
+            GetDepartments();
             GetUsers();
         });
 
@@ -102,6 +106,19 @@
                 data: { },
                 success: function (response) {
                     GenerateTable(response);
+                }
+            });
+        }
+
+        var departments = [];
+        async function GetDepartments() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetDepartments", "Department")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { },
+                success: function (response) {
+                    departments = response;
                 }
             });
         }
@@ -121,14 +138,58 @@
                 ]);
             }
 
-            $('#table_user').DataTable({
+            table = $('#table_user').DataTable({
                 data: datas,
+                columnDefs: [
+                    {
+                        targets: [1, 2, 3],
+                        className: "border-left"
+                    }
+                ],
+                rowCallback: function (row, data) {
+                    $('td:eq(0)', row).addClass("text-center");
+                    $('td:eq(3)', row).addClass("text-center");
+                }
             });
         }
 
+        var update = false;
         $('#btn_add').on('click', function () {
+            update = false;
             $('#modal_user').modal();
+            $('#modal_title').text("Create User");
+            $('#department').empty();
+            var dep_str = '<option value="" selected disabled>Please Select Department</option>';
+            for (var i = 0; i < departments.length; i++) {
+                dep_str += '<option value="' + departments[i].department_id + '">' + departments[i].department_name + '</option>'
+            }
+            $('#department').append(dep_str);
         });
+
+        $('#btn_import').on('click', function () {
+            alert("Button Import Click");
+        });
+
+        $('#btn_export').on('click', function () {
+            alert("Button Export Click");
+        });
+
+        $('#table_user tbody').on('click', 'tr', function () {
+            GetDepartments();
+            EditUser(table.row(this).data());
+        });
+
+        function EditUser(data) {
+            update = true;
+            $('#modal_user').modal();
+            $('#modal_title').text("Edit User");
+            $('#department').empty();
+            var dep_str = '<option value="" selected disabled>Please Select Department</option>';
+            for (var i = 0; i < departments.length; i++) {
+                dep_str += '<option value="' + departments[i].department_id + '">' + departments[i].department_name + '</option>'
+            }
+            $('#department').append(dep_str);
+        }
 
     </script>
 }

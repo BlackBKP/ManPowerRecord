@@ -35,7 +35,7 @@
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <table id="table_holiday" class="table table-sm table-striped table-hover w-100">
+                        <table id="table_holiday" class="table table-sm border compact table-striped table-hover w-100">
                             <thead class="text-center">
                                 <tr>
                                     <th>No</th>
@@ -94,7 +94,20 @@
 
         $(document).ready(function () {
             GetHolidays();
+            GenerateYearOption();
         });
+
+        function GenerateYearOption() {
+            var today = new Date();
+            var year = today.getFullYear();
+
+            $('#year').empty();
+            var year_str = '<option value="" selected disabled>Please Select Year</option>';
+            for (var i = 0; i < 15; i++) {
+                year_str += '<option value="' + (year - i) + '">' + (year - i) + '</option>';
+            }
+            $('#year').append(year_str);
+        }
 
         function GetHolidays() {
             $.ajax({
@@ -121,13 +134,38 @@
             }
 
             table = $('#table_holiday').DataTable({
-                data:datas,
+                data: datas,
+                columnDefs: [
+                    {
+                        targets: [1, 2],
+                        className: "border-left",
+                    },
+                    {
+                        targets: [0],
+                        visible: false
+                    }
+                ],
+                rowCallback: function (row, data) {
+                    $('td:eq(0)', row).addClass("text-center");
+                }
             });
         }
 
+        $('#btn_load').on('click', function () {
+            alert("Button Load Clicked");
+        });
 
         $('#btn_add').on('click', function () {
             $('#modal_holiday').modal();
         });
+
+        $('#btn_import').on('click', function () {
+            alert("Button Import Clicked");
+        });
+
+        $('#btn_export').on('click', function () {
+            alert("Button Export Clicked");
+        });
+        
     </script>
 }

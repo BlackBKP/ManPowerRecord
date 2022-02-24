@@ -25,7 +25,7 @@
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <table id="table_department" class="table table-sm table-striped table-hover w-100">
+                        <table id="table_department" class="table table-sm compact border table-striped table-hover w-100">
                             <thead class="text-center">
                                 <tr>
                                     <th>ID</th>
@@ -33,6 +33,9 @@
                                     <th>Description</th>
                                 </tr>
                             </thead>
+                            <tbody>
+
+                            </tbody>
                             <tfoot class="text-center">
                                 <tr>
                                     <th>ID</th>
@@ -52,7 +55,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create Job</h5>
+                <h5 id="modal_title" class="modal-title">Create Department</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -71,7 +74,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="btn_save" type="button" class="btn btn-primary">Save changes</button>
+                <button id="btn_save" type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -114,11 +117,47 @@
 
             table = $('#table_department').DataTable({
                 data: datas,
+                columnDefs: [
+                    {
+                        targets: [1, 2],
+                        className: "border-left"
+                    },
+                    {
+                        targets: 0,
+                        visible: false
+                    }
+                ],
+                rowCallback: function (row, data) {
+                    $('td:eq(0)', row).addClass("text-center");
+                    $('td:eq(1)', row).addClass("text-center");
+                }
             });
         }
 
+        var update = false;
         $('#btn_add').on('click', function () {
+            update = false;
             $('#modal_department').modal();
+            $('#modal_title').text("Create Department");
         });
+
+        $('#btn_import').on('click', function () {
+            alert("Button Import Click");
+        });
+
+        $('#btn_export').on('click', function () {
+            alert("Button Export Click");
+        });
+
+        $('#table_department tbody').on('click', 'tr', function () {
+            EditDepartment(table.row(this).data());
+        });
+
+        function EditDepartment(data) {
+            update = true;
+            $('#modal_department').modal();
+            $('#modal_title').text("Edit Department");
+        }
+
     </script>
 }

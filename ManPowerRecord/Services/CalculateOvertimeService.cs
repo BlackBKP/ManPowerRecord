@@ -1,4 +1,5 @@
-﻿using ManPowerRecord.Models;
+﻿using ManPowerRecord.Interfaces;
+using ManPowerRecord.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ManPowerRecord.Services
 {
-    public class CalculateOvertimeService
+    public class CalculateOvertimeService : ICalculateWorkingHours
     {
         public WorkingHoursModel CalculateOvertime(WorkingHoursModel wh)
         {
@@ -29,7 +30,7 @@ namespace ManPowerRecord.Services
             //00:00 -> 12:00
             if (start_time < t1)
             {
-                normal += (stop_time > t1) ? t1 - start_time : stop_time - start_time;
+                normal += (stop_time >= t1) ? t1 - start_time : stop_time - start_time;
             }
 
             //12:00 -> 13:00
@@ -37,8 +38,8 @@ namespace ManPowerRecord.Services
             {
                 TimeSpan time_start = new TimeSpan();
                 TimeSpan time_end = new TimeSpan();
-                time_start = (start_time < t1) ? t1 : start_time;
-                time_end = (stop_time > t2) ? t2 : stop_time;
+                time_start = (start_time <= t1) ? t1 : start_time;
+                time_end = (stop_time >= t2) ? t2 : stop_time;
                 normal += time_end - time_start;
             }
 
@@ -47,8 +48,8 @@ namespace ManPowerRecord.Services
             {
                 TimeSpan time_start = new TimeSpan();
                 TimeSpan time_end = new TimeSpan();
-                time_start = (start_time < t2) ? t2 : start_time;
-                time_end = (stop_time > t3) ? t3 : stop_time;
+                time_start = (start_time <= t2) ? t2 : start_time;
+                time_end = (stop_time >= t3) ? t3 : stop_time;
                 normal += time_end - time_start;
             }
 
@@ -57,8 +58,8 @@ namespace ManPowerRecord.Services
             {
                 TimeSpan time_start = new TimeSpan();
                 TimeSpan time_end = new TimeSpan();
-                time_start = (start_time < t3) ? t3 : start_time;
-                time_end = (stop_time > t4) ? t4 : stop_time;
+                time_start = (start_time <= t3) ? t3 : start_time;
+                time_end = (stop_time >= t4) ? t4 : stop_time;
                 ot1_5 += time_end - time_start;
             }
 
@@ -67,7 +68,7 @@ namespace ManPowerRecord.Services
             {
                 TimeSpan time_start = new TimeSpan();
                 TimeSpan time_end = new TimeSpan();
-                time_start = (start_time < t4) ? t4 : start_time;
+                time_start = (start_time <= t4) ? t4 : start_time;
                 time_end = (stop_time >= t5) ? t5 : stop_time;
                 ot1_5 += time_end - time_start;
             }

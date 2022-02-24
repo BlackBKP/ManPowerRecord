@@ -13,7 +13,7 @@ namespace ManPowerRecord.Controllers
     public class WorkingHoursController : Controller
     {
         IWorkingHours WorkingHoursService;
-        CalculateOvertimeService CalculateOTService;
+        ICalculateWorkingHours CalculateOTService;
 
         public WorkingHoursController()
         {
@@ -37,8 +37,6 @@ namespace ManPowerRecord.Controllers
             }
             return Json(whs);
         }
-
-        
 
         [HttpPost]
         public JsonResult AddWorkingHours(string wh_string)

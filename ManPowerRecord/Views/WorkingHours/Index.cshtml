@@ -10,14 +10,14 @@
     <div class="col-xl-2 col-lg-3 col-md-3 pb-3">
         <input id="month" type="month" class="form-control" />
     </div>
-    <div class="col-xl-2 col-lg-3 col-md-3 pb-3">
+    <div class="col-xl-1 col-lg-3 col-md-3 pb-3">
         <button id="btn_filter" type="button" class="btn btn-primary form-control elevation-1">
             <i class="fas fa-sync"></i> Load
         </button>
     </div>
-    <div class="col-xl-2 col-lg-3 col-md-3 pb-3">
+    <div class="col-xl-1 col-lg-3 col-md-3 pb-3">
         <button id="btn_print" type="button" class="btn btn-success form-control elevation-1">
-            <i class="fas fa-print"></i> Print
+            <i class="fas fa-file-excel"></i> Excel
         </button>
     </div>
     <div class="col-xl-12">
@@ -26,7 +26,7 @@
                 <span class="card-title">Working Hours</span>
             </div>
             <div class="card-body">
-                <table id="table_wh" class="table table-sm table-hover table-striped w-100">
+                <table id="table_wh" class="table table-sm compact border table-hover table-striped w-100">
                     <thead class="text-center">
                         <tr>
                             <th>Date</th>
@@ -208,14 +208,14 @@
                     whs[i].user_id,
                     whs[i].job_id,
                     whs[i].task_id,
-                    whs[i].start_time,
-                    whs[i].stop_time,
+                    whs[i].start_time.substring(0,5),
+                    whs[i].stop_time.substring(0,5),
                     whs[i].lunch,
                     whs[i].dinner,
                     whs[i].note,
-                    whs[i].normal,
-                    whs[i].ot1_5,
-                    whs[i].ot3_0
+                    whs[i].normal.substring(0,5),
+                    whs[i].ot1_5.substring(0,5),
+                    whs[i].ot3_0.substring(0,5)
                 ]);
             }
 
@@ -224,7 +224,34 @@
 
             table = $('#table_wh').DataTable({
                 data: datas,
-                order: [[0,"desc"]]
+                order: [[0, "desc"]],
+                columnDefs: [
+                    {
+                        targets: [1,2,3,4,5,6,7,8,9,10,11],
+                        className: "border-left"
+                    }
+                ],
+                rowCallback: function (row, data) {
+                    $('td:eq(0)', row).addClass("text-center");
+                    $('td:eq(1)', row).addClass("text-center");
+                    $('td:eq(2)', row).addClass("text-center");
+                    $('td:eq(3)', row).addClass("text-center");
+                    $('td:eq(4)', row).addClass("text-center");
+                    $('td:eq(5)', row).addClass("text-center");
+                    $('td:eq(6)', row).addClass("text-center");
+                    $('td:eq(7)', row).addClass("text-center");
+                    $('td:eq(9)', row).addClass("text-center");
+                    $('td:eq(10)', row).addClass("text-center");
+                    $('td:eq(11)', row).addClass("text-center");
+                    data[6] === true ? $('td:eq(6)', row).html("✓") : $('td:eq(6)', row).html("");
+                    data[7] === true ? $('td:eq(7)', row).html("✓") : $('td:eq(7)', row).html("");
+                    if (data[9] === "00:00")
+                        $('td:eq(9)', row).html("");
+                    if (data[10] === "00:00")
+                        $('td:eq(10)', row).html("");
+                    if (data[11] === "00:00")
+                        $('td:eq(11)', row).html("");
+                }
             });
         };
 
@@ -298,8 +325,5 @@
             });
 
         });
-
-
-
     </script>
 }
