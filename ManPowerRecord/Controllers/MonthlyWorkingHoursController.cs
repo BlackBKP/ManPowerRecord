@@ -43,9 +43,9 @@ namespace ManPowerRecord.Controllers
                 WorkingHoursModel wh = new WorkingHoursModel()
                 {
                     working_date = dd,
-                    job_id = whs.Where(w => w.working_date == dd).Select(s => s.job_id).FirstOrDefault() ,
-                    start_time = whs.Where(w => w.working_date == dd).Select(s => s.start_time).FirstOrDefault(),
-                    stop_time = whs.Where(w => w.working_date == dd).Select(s => s.stop_time).FirstOrDefault(),
+                    job_1 = whs.Where(w => w.working_date == dd).Select(s => s.job_1).FirstOrDefault() ,
+                    start_time1 = whs.Where(w => w.working_date == dd).Select(s => s.start_time1).FirstOrDefault(),
+                    stop_time1 = whs.Where(w => w.working_date == dd).Select(s => s.stop_time1).FirstOrDefault(),
                     lunch = whs.Where(w => w.working_date == dd).Select(s => s.lunch).FirstOrDefault(),
                     dinner = whs.Where(w => w.working_date == dd).Select(s => s.dinner).FirstOrDefault(),
                     normal = whs.Where(w => w.working_date == dd).Select(s => s.normal).FirstOrDefault(),
@@ -61,7 +61,7 @@ namespace ManPowerRecord.Controllers
         [HttpGet]
         public JsonResult GetMonthlySummary()
         {
-            List<string> job_ids = monthly.Select(s => s.job_id).Distinct().ToList();
+            List<string> job_ids = monthly.Select(s => s.job_1).Distinct().ToList();
             job_ids = job_ids.Where(w => w != null).ToList();
             List<JobWorkingHoursSummaryModel> jwhs = new List<JobWorkingHoursSummaryModel>();
 
@@ -73,7 +73,7 @@ namespace ManPowerRecord.Controllers
                 TimeSpan nn = new TimeSpan();
                 TimeSpan ot1_5 = new TimeSpan();
                 TimeSpan ot3_0 = new TimeSpan();
-                List<WorkingHoursModel> job = monthly.Where(w => w.job_id == job_ids[i]).ToList();
+                List<WorkingHoursModel> job = monthly.Where(w => w.job_1 == job_ids[i]).ToList();
                 for(int j = 0; j < job.Count; j++)
                 {
                     nn += job[j].normal;

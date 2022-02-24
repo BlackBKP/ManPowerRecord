@@ -17,7 +17,7 @@
             <i class="fas fa-filter"></i> Filter
         </button>
     </div>
-    <div class="col-xl-8">
+    <div class="col-12">
         <div class="card card-dark">
             <div class="card-header">
                 <span class="card-title">Calendar</span>
@@ -27,28 +27,11 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-4">
-        <div class="card card-dark">
-            <div class="card-header">
-                <span class="card-title">Holidays</span>
-            </div>
-            <div class="card-body">
-                <table id="table_holiday" class="table table-sm compact table-hover table-striped w-100">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Task Modal -->
 <div class="modal fade" id="modal_task" tabindex="-1" role="dialog" data-backdrop="static">
-    <div class="modal-lg modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-xl modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal_task_title">Add Tasks</h5>
@@ -60,36 +43,86 @@
                 <form>
                     <div class="form-group">
                         <label for="user_id">User</label>
-                        <input id="user_id" type="text" class="form-control" placeholder="User ID" />
+                        <input id="user_id" type="text" class="form-control" placeholder="User ID" disabled/>
                     </div>
                     <div class="form-group">
                         <label for="working_date">Date</label>
                         <input id="working_date" type="date" class="form-control" />
                     </div>
-                    <div class="form-group">
-                        <label for="job_id">Job</label>
-                        <select id="job_id" class="form-control">
-                            <option value="" selected disabled>Please Select Job</option>
-                            <option value="J201299">J20-1299 BTGNM</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="task_id">Task</label>
-                        <select id="task_id" class="form-control">
-                            <option value="" selected disabled>Please Select Task</option>
-                            <option>Task 1</option>
-                        </select>
+                    <hr />
+                    <div class="form-group row">
+                        <div class="col-xl-3">
+                            <label for="job_1">1). Job</label>
+                            <select id="job_1" class="form-control">
+                                <option value="" selected disabled>Please Select Job</option>
+                                <option value="J201299">J20-1299 BTGNM</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3">
+                            <label for="task_1">Task</label>
+                            <select id="task_1" class="form-control">
+                                <option value="" selected disabled>Please Select Task</option>
+                                <option>Task 1</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3">
+                            <label for="start_time1">Start Time</label>
+                            <input id="start_time1" type="time" class="form-control" value="08:30" />
+                        </div>
+                        <div class="col-xl-3">
+                            <label for="stop_time1">Stop Time</label>
+                            <input id="stop_time1" type="time" class="form-control" value="17:30" />
+                        </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-6">
-                            <label for="start_time">Start Time</label>
-                            <input id="start_time" type="time" class="form-control" value="08:30" />
+                        <div class="col-xl-3">
+                            <label for="job_2">2). Job</label>
+                            <select id="job_2" class="form-control">
+                                <option value="" selected disabled>Please Select Job</option>
+                                <option value="J201299">J20-1299 BTGNM</option>
+                            </select>
                         </div>
-                        <div class="col-6">
-                            <label for="stop_time">Stop Time</label>
-                            <input id="stop_time" type="time" class="form-control" value="17:30" />
+                        <div class="col-xl-3">
+                            <label for="task_2">Task</label>
+                            <select id="task_2" class="form-control">
+                                <option value="" selected disabled>Please Select Task</option>
+                                <option>Task 1</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3">
+                            <label for="start_time2">Start Time</label>
+                            <input id="start_time2" type="time" class="form-control" />
+                        </div>
+                        <div class="col-xl-3">
+                            <label for="stop_time2">Stop Time</label>
+                            <input id="stop_time2" type="time" class="form-control" />
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-xl-3">
+                            <label for="job_3">3). Job</label>
+                            <select id="job_3" class="form-control">
+                                <option value="" selected disabled>Please Select Job</option>
+                                <option value="J201299">J20-1299 BTGNM</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3">
+                            <label for="task_3">Task</label>
+                            <select id="task_3" class="form-control">
+                                <option value="" selected disabled>Please Select Task</option>
+                                <option>Task 1</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3">
+                            <label for="start_time3">Start Time</label>
+                            <input id="start_time3" type="time" class="form-control" />
+                        </div>
+                        <div class="col-xl-3">
+                            <label for="stop_time3">Stop Time</label>
+                            <input id="stop_time3" type="time" class="form-control" />
+                        </div>
+                    </div>
+                    <hr />
                     <div class="form-group">
                         <label>Break</label>
                     </div>
@@ -142,8 +175,6 @@
                 data: {
                 },
                 success: function (response) {
-                    console.log("Jobs");
-                    console.log(response);
                     jobs = response;
                 }
             });
@@ -171,8 +202,6 @@
                 data: {
                 },
                 success: function (response) {
-                    console.log("Tasks");
-                    console.log(response);
                     tasks = response;
                 }
             });
@@ -228,18 +257,26 @@
                 datas.push(
                     {
                         title: whs[i].note,
-                        start: start_date.setHours(whs[i].start_time.split(":")[0], whs[i].start_time.split(":")[1]),
-                        end: start_date.setHours(whs[i].stop_time.split(":")[0], whs[i].stop_time.split(":")[1]),
+                        start: start_date.setHours(whs[i].start_time1.split(":")[0], whs[i].start_time1.split(":")[1]),
+                        end: start_date.setHours(whs[i].stop_time1.split(":")[0], whs[i].stop_time1.split(":")[1]),
                         allDay: false,
                         editable: false,
                         extendedProps: {
                             index: whs[i].index,
                             user_id: whs[i].user_id,
                             working_date: whs[i].working_date,
-                            job_id: whs[i].job_id,
-                            task_id: whs[i].task_id,
-                            start_time: whs[i].start_time,
-                            stop_time: whs[i].stop_time,
+                            job_1: whs[i].job_1,
+                            task_1: whs[i].task_1,
+                            start_time1: whs[i].start_time1,
+                            stop_time1: whs[i].stop_time1,
+                            job_2: whs[i].job_2,
+                            task_2: whs[i].task_2,
+                            start_time2: whs[i].start_time2,
+                            stop_time2: whs[i].stop_time2,
+                            job_3: whs[i].job_3,
+                            task_3: whs[i].task_3,
+                            start_time3: whs[i].start_time3,
+                            stop_time3: whs[i].stop_time3,
                             lunch: whs[i].lunch,
                             dinner: whs[i].dinner,
                             note: whs[i].note,
@@ -304,12 +341,12 @@
             $('#modal_task').modal();
             $('#modal_task_title').text("Add Task");
             update = false;
-            $('#user_id').val("U0001");
+            $('#user_id').val("Korakod.P");
             $('#working_date').val(date_start);
-            $('#job_id').val();
-            $('#task_id').val();
-            $('#start_time').val("08:30");
-            $('#stop_time').val("17:30");
+            $('#job_1').val();
+            $('#task_1').val();
+            $('#start_time1').val("08:30");
+            $('#stop_time1').val("17:30");
             $('#lunch').prop('checked', true);
             $('#dinner').prop('checked', true);
             $('#note').val();
@@ -318,23 +355,39 @@
         $('#btn_accept').on('click', function () {
             var user_id = $('#user_id').val();
             var working_date = $('#working_date').val();
-            var job_id = $('#job_id').val();
-            var task_id = $('#task_id').val();
-            var start_time = $('#start_time').val();
-            var stop_time = $('#stop_time').val();
+            var job_1 = $('#job_1').val();
+            var task_1 = $('#task_1').val();
+            var start_time1 = $('#start_time1').val();
+            var stop_time1 = $('#stop_time1').val();
+            var job_2 = $('#job_2').val();
+            var task_2 = $('#task_2').val();
+            var start_time2 = $('#start_time2').val() !== "" ? $('#start_time2').val() : "00:00";
+            var stop_time2 = $('#stop_time2').val() !== "" ? $('#stop_time2').val() : "00:00";
+            var job_3 = $('#job_3').val();
+            var task_3 = $('#task_3').val();
+            var start_time3 = $('#start_time3').val() !== "" ? $('#start_time3').val() : "00:00";
+            var stop_time3 = $('#stop_time3').val() !== "" ? $('#stop_time3').val() : "00:00";
             var lunch = $('#lunch').prop('checked');
             var dinner = $('#dinner').prop('checked');
             var note = $('#note').val();
 
-            var debug = false;
+            var debug = true;
             if (debug) {
                 console.log("Add Task");
                 console.log("User ID -> " + user_id);
                 console.log("Date -> " + working_date);
-                console.log("Job ID -> " + job_id);
-                console.log("Task ID -> " + task_id);
-                console.log("From -> " + start_time);
-                console.log("To -> " + stop_time);
+                console.log("Job 1 -> " + job_1);
+                console.log("Task -> " + task_1);
+                console.log("From -> " + start_time1);
+                console.log("To -> " + stop_time1);
+                console.log("Job 2 -> " + job_2);
+                console.log("Task -> " + task_2);
+                console.log("From -> " + start_time2);
+                console.log("To -> " + stop_time2);
+                console.log("Job 3 -> " + job_3);
+                console.log("Task -> " + task_3);
+                console.log("From -> " + start_time3);
+                console.log("To -> " + stop_time3);
                 console.log("Lunch -> " + lunch);
                 console.log("Dinner -> " + dinner);
                 console.log("Note -> " + note);
@@ -345,10 +398,18 @@
                     "index": wh_index,
                     "user_id": user_id,
                     "working_date": working_date,
-                    "job_id": job_id,
-                    "task_id": task_id,
-                    "start_time": start_time,
-                    "stop_time": stop_time,
+                    "job_1": job_1,
+                    "task_1": task_1,
+                    "start_time1": start_time1,
+                    "stop_time1": stop_time1,
+                    "job_2": job_2,
+                    "task_2": task_2,
+                    "start_time2": start_time2,
+                    "stop_time2": stop_time2,
+                    "job_3": job_3,
+                    "task_3": task_3,
+                    "start_time3": start_time3,
+                    "stop_time3": stop_time3,
                     "lunch": lunch,
                     "dinner": dinner,
                     "note": note,
@@ -359,10 +420,18 @@
                 var wh_string = JSON.stringify({
                     "user_id": user_id,
                     "working_date": working_date,
-                    "job_id": job_id,
-                    "task_id": task_id,
-                    "start_time": start_time,
-                    "stop_time": stop_time,
+                    "job_1": job_1,
+                    "task_1": task_1,
+                    "start_time1": start_time1,
+                    "stop_time1": stop_time1,
+                    "job_2": job_2,
+                    "task_2": task_2,
+                    "start_time2": start_time2,
+                    "stop_time2": stop_time2,
+                    "job_3": job_3,
+                    "task_3": task_3,
+                    "start_time3": start_time3,
+                    "stop_time3": stop_time3,
                     "lunch": lunch,
                     "dinner": dinner,
                     "note": note,
@@ -380,10 +449,18 @@
             wh_index = task.index;
             $('#user_id').val(task.user_id);
             $('#working_date').val(task.working_date.split("T")[0]);
-            $('#job_id').val(task.job_id);
-            $('#task_id').val(task.task_id);
-            $('#start_time').val(task.start_time);
-            $('#stop_time').val(task.stop_time);
+            $('#job_1').val(task.job_1);
+            $('#task_1').val(task.task_1);
+            $('#start_time1').val(task.start_time1);
+            $('#stop_time1').val(task.stop_time1);
+            $('#job_2').val(task.job_2);
+            $('#task_2').val(task.task_2);
+            $('#start_time2').val(task.start_time2);
+            $('#stop_time2').val(task.stop_time2);
+            $('#job_3').val(task.job_3);
+            $('#task_3').val(task.task_3);
+            $('#start_time3').val(task.start_time3);
+            $('#stop_time3').val(task.stop_time3);
             if (task.lunch) {
                 $('#lunch').prop('checked', true);
             }
