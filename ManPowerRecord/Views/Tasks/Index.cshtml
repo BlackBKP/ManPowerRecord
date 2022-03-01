@@ -3,7 +3,7 @@
 }
 <div class="row p-3">
     <div class="col-xl-1 pb-3">
-        <button id="btn_create" type="button" class="btn btn-primary form-control elevation-1">
+        <button id="btn_add" type="button" class="btn btn-primary form-control elevation-1">
             <i class="fas fa-plus"></i> Create Task
         </button>
     </div>
@@ -28,17 +28,18 @@
                         <tr>
                             <th>ID</th>
                             <th>Job ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
+                            <th>Job Name</th>
+                            <th>Task Name</th>
                             <th>Status</th>
                         </tr>
                     </thead>
+                    <tbody></tbody>
                     <tfoot class="text-center">
                         <tr>
                             <th>ID</th>
                             <th>Job ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
+                            <th>Job Name</th>
+                            <th>Task Name</th>
                             <th>Status</th>
                         </tr>
                     </tfoot>
@@ -52,33 +53,27 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create Task</h5>
+                <h5 id="modal_title" class="modal-title">Add Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form>
+                    <div class="form-group" hidden>
+                        <label for="task_id">Task ID</label>
+                        <input id="task_id" class="form-control" />
+                    </div>
                     <div class="form-group">
                         <label for="job_id">Job ID</label>
                         <select id="job_id" class="form-control">
-                            <option value="" selected disabled>Please Select Job</option>
-                            <option value="">Others</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="task_id">Task ID</label>
-                        <input id="task_id" type="text" class="form-control" placeholder="Task ID" />
                     </div>
                     <div class="form-group">
                         <label for="task_name">Task Name</label>
                         <input id="task_name" type="text" class="form-control" placeholder="Task Name" />
                     </div>
-                    <div class="form-group">
-                        <label for="task_description">Task Description</label>
-                        <input id="task_description" type="text" class="form-control" placeholder="Task Description" />
-                    </div>
-                    <div class="form-group">
+                    <div id="group_status" class="form-group" hidden>
                         <label for="status">Status</label>
                         <input id="status" type="text" class="form-control" placeholder="Status" />
                     </div>
@@ -95,12 +90,34 @@
 @section Scripts
 { 
     <script type="text/javascript">
-
+        //Variable Declaration
         var update = false;
         var table;
+        var tasks = [];
+        var jobs = [];
+
+        //Change these variable to true for log response
+        var debug_jobs = false;
+        var debug_tasks = false;
+        var debug_create = false;
+
         $(document).ready(function () {
             GetTasks();
         });
+
+        async function GetJobs() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobs", "Job")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { },
+                success: function (response) {
+                    if (debug_jobs)
+                        console.log(response);
+                    jobs = response;
+                }
+            });
+        };
 
         async function GetTasks() {
             await $.ajax({
@@ -109,6 +126,9 @@
 	            contentType: 'application/x-www-form-urlencoded',
                 data: { },
                 success: function (response) {
+                    if (debug_tasks)
+                        console.log(response);
+                    tasks = response;
                     GenerateTable(response);
                 }
             });
@@ -124,89 +144,93 @@
                 datas.push([
                     tasks[i].task_id,
                     tasks[i].job_id,
+                    tasks[i].job_name,
                     tasks[i].task_name,
-                    tasks[i].task_description,
                     tasks[i].status,
                 ]);
             }
 
             table = $('#table_tasks').DataTable({
+                lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
                 data: datas,
                 columnDefs: [
                     {
-                        targets: [1,2,3,4],
+                        targets: [1,2,3],
                         className: "border-left"
                     },
                     {
-                        targets: [0],
+                        targets: [0,4],
                         visible: false
                     }
                 ],
                 rowCallback: function (row, data) {
                     $('td:eq(0)', row).addClass("text-center");
-                    $('td:eq(3)', row).addClass("text-center");
                 }
             });
         };
 
-        $('#btn_create').on('click', function () {
-            CreateTask();
+        $('#btn_add').on('click', function () {
+            GetJobs().then(() => GenerateJobOption()).then(() => Prepmodal());
         });
 
-        function CreateTask() {
+        function Prepmodal() {
             update = false;
             $('#modal_task').modal();
-            $('#job_id').val();
-            $('#task_id').val();
+            $('#modal_title').text("Add Task");
             $('#task_name').val();
-            $('#task_description').val();
-            $('#status').val();
-        };
+            $('#job_id').attr('disabled', false);
+            //$('#status').val();
+        }
 
         $('#table_tasks tbody').on('click', 'tr', function () {
-            EditTask(table.row(this).data());
+            GetJobs().then(() => GenerateJobOption()).then(() => EditTask(table.row(this).data()));
         });
+
+        function GenerateJobOption() {
+            $('#job_id').empty();
+            var job_str = '<option value="" selected disabled>Please select job</option>';
+            for (var i = 0; i < jobs.length; i++) {
+                job_str += '<option value="' + jobs[i].job_id + '">' + jobs[i].job_name + '</option>';
+            }
+            $('#job_id').append(job_str);
+        }
 
         function EditTask(data) {
             update = true;
-
-            var job_id = data[3];
             var task_id = data[0];
-            var task_name = data[1];
-            var task_description = data[2];
-            var status = data[4];
-
+            var job_id = data[1];
+            //var job_name = data[2];
+            var task_name = data[3];
+            //var status = data[4];
             $('#modal_task').modal();
-            $('#job_id').val(job_id);
+            $('#modal_title').text("Edit Task");
             $('#task_id').val(task_id);
+            $('#job_id').attr('disabled', true);
+            $('#job_id').val(job_id);
             $('#task_name').val(task_name);
-            $('#task_description').val(task_description);
-            $('#status').val(status);
+            //$('#status').val(status);
         }
 
         $('#btn_save').on('click', function () {
-            var job_id = $('#job_id').val();
             var task_id = $('#task_id').val();
+            var job_id = $('#job_id').val();
             var task_name = $('#task_name').val();
-            var task_description = $('#task_description').val();
-            var status = $('#status').val();
+            //var status = $('#status').val();
             job_id = job_id !== null ? job_id : "";
             status = (status === null) ? "" : status;
 
-            var debug = true;
-            if (debug) {
+            if (debug_create) {
                 console.log("Job ID: " + job_id);
                 console.log("Task ID: " + task_id);
                 console.log("Task Name: " + task_name);
-                console.log("Task Description: " + task_description);
-                console.log("Status: " + status);
+                //console.log("Status: " + status);
             }
 
             var task_string = JSON.stringify({
-                "job_id": job_id,
                 "task_id": task_id,
+                "job_id": job_id,
+                "job_name": job_name,
                 "task_name": task_name,
-                "task_description": task_description,
                 "status": status
             });
 
