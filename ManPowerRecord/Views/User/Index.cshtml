@@ -64,6 +64,10 @@
             </div>
             <div class="modal-body">
                 <form>
+                    <div class="form-group" hidden>
+                        <label for="user_no">User No</label>
+                        <input id="user_no" type="text" class="form-control" />
+                    </div>
                     <div class="form-group">
                         <label for="user_id">User ID</label>
                         <input id="user_id" type="text" class="form-control" placeholder="Firstname.L" />
@@ -74,9 +78,7 @@
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
-                        <select id="department" class="form-control">
-                            <option value="" selected disabled>Please Select Department</option>
-                        </select>
+                        <select id="department" class="form-control"></select>
                     </div>
                 </form>
             </div>
@@ -91,7 +93,16 @@
 @section Scripts
 {
     <script type="text/javascript">
+        //Variable Declaration
         var table;
+        var users = [];
+        var departments = [];
+        var update = false;
+
+        //Change these variables to true to show response
+        var debug_user = false;
+        var debug_department = false;
+        var debug_user_string = false;
 
         $(document).ready(function () {
             GetDepartments();
@@ -105,12 +116,14 @@
 	            contentType: 'application/x-www-form-urlencoded',
                 data: { },
                 success: function (response) {
+                    users = response;
+                    if (debug_user)
+                        console.log(users);
                     GenerateTable(response);
                 }
             });
         }
 
-        var departments = [];
         async function GetDepartments() {
             await $.ajax({
                 type: "GET",
@@ -119,6 +132,9 @@
                 data: { },
                 success: function (response) {
                     departments = response;
+                    if (debug_department)
+                        console.log(departments);
+                    GenarateDepartmentsOption();
                 }
             });
         }
@@ -139,6 +155,7 @@
             }
 
             table = $('#table_user').DataTable({
+                lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
                 data: datas,
                 columnDefs: [
                     {
@@ -153,18 +170,27 @@
             });
         }
 
-        var update = false;
         $('#btn_add').on('click', function () {
-            update = false;
-            $('#modal_user').modal();
-            $('#modal_title').text("Create User");
+            GetDepartments().then(() => Prepmodal());
+        });
+
+        function GenarateDepartmentsOption() {
             $('#department').empty();
             var dep_str = '<option value="" selected disabled>Please Select Department</option>';
             for (var i = 0; i < departments.length; i++) {
-                dep_str += '<option value="' + departments[i].department_id + '">' + departments[i].department_name + '</option>'
+                dep_str += '<option value="' + departments[i].department_name + '">' + departments[i].department_name + '</option>'
             }
             $('#department').append(dep_str);
-        });
+        }
+
+        function Prepmodal() {
+            update = false;
+            $('#modal_user').modal();
+            $('#modal_title').text("Create User");
+            $('#user_id').val(null);
+            $('#user_name').val(null);
+            $('#department').val();
+        }
 
         $('#btn_import').on('click', function () {
             alert("Button Import Click");
@@ -175,20 +201,72 @@
         });
 
         $('#table_user tbody').on('click', 'tr', function () {
-            GetDepartments();
-            EditUser(table.row(this).data());
+            GetDepartments().then(() => GenarateDepartmentsOption()).then(() => EditUser(table.row(this).data()));
         });
 
         function EditUser(data) {
             update = true;
             $('#modal_user').modal();
             $('#modal_title').text("Edit User");
-            $('#department').empty();
-            var dep_str = '<option value="" selected disabled>Please Select Department</option>';
-            for (var i = 0; i < departments.length; i++) {
-                dep_str += '<option value="' + departments[i].department_id + '">' + departments[i].department_name + '</option>'
+            $('#user_no').val(data[0]);
+            $('#user_id').val(data[1]);
+            $('#user_name').val(data[2]);
+            $('#department').val(data[3]);
+        }
+
+        $('#btn_save').on('click', function () {
+            var user_no = $('#user_no').val();
+            var user_id = $('#user_id').val();
+            var user_name = $('#user_name').val();
+            var department = $('#department').val();
+
+            var user_string = JSON.stringify({
+                "user_no": user_no,
+                "user_id": user_id,
+                "user_name": user_name,
+                "department": department,
+            });
+
+            if (debug_user_string) {
+                console.log(user_string);
             }
-            $('#department').append(dep_str);
+
+            if (update) {
+                UpdateUser(user_string);
+            }
+            else {
+                CreateUser(user_string);
+            }
+        });
+
+        async function CreateUser(user_string) {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("CreateUser", "User")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { user_string },
+                success: function (response) {
+                    if (response === "Success")
+                        location.reload();
+                    else
+                        alert(response);
+                }
+            });
+        }
+
+        async function UpdateUser(user_string) {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("UpdateUser", "User")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { user_string },
+                success: function (response) {
+                    if (response === "Success")
+                        location.reload();
+                    else
+                        alert(response);
+                }
+            });
         }
 
     </script>

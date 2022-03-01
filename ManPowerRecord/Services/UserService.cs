@@ -46,5 +46,44 @@ namespace ManPowerRecord.Services
             connection.Close();
             return users;
         }
+
+        public string CreateUser(UserModel user)
+        {
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+            using (SqlCommand command = new SqlCommand("INSERT INTO [Users](user_id, user_name, department) VALUES(@user_id, @user_name, @department)", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@user_id", user.user_id);
+                command.Parameters.AddWithValue("@user_name", user.user_name);
+                command.Parameters.AddWithValue("@department", user.department);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+            return "Success";
+        }
+
+        public string UpdateUser(UserModel user)
+        {
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+            using (SqlCommand command = new SqlCommand("UPDATE [Users] SET " +
+                "user_id = @user_id, " +
+                "user_name = @user_name, " +
+                "department = @department, " +
+                "WHERE user_no = @user_no", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@user_id", user.user_id);
+                command.Parameters.AddWithValue("@user_name", user.user_name);
+                command.Parameters.AddWithValue("@department", user.department);
+                command.Parameters.AddWithValue("@user_no", user.user_no);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+            return "Success";
+        }
     }
 }
