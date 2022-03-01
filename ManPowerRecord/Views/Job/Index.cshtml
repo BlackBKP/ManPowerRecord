@@ -270,7 +270,7 @@
             $('#sale').empty();
             var sale_str = '<option value="">Please Select Sale</option>';
             for (var i = 0; i < users.length; i++) {
-                sale_str += '<option value="' + users.user_id + '">' + users.user_name + '</option>';
+                sale_str += '<option value="' + users[i].user_id + '">' + users[i].user_name + '</option>';
             }
             $('#sale').append(sale_str);
         }
@@ -307,7 +307,7 @@
             var cost = data[4];
             var md = data[5];
             var pd = data[6];
-            var status = data[7];
+            var status = data[11];
 
             $('#job_id').val(job_id);
             $('#job_name').val(job_name);
