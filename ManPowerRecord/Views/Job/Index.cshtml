@@ -28,7 +28,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Description</th>
                             <th>Sale Dep</th>
                             <th>Sale</th>
                             <th>Cost</th>
@@ -41,11 +40,11 @@
                             <th>Status</th>
                         </tr>
                     </thead>
+                    <tbody></tbody>
                     <tfoot class="text-center">
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Description</th>
                             <th>Sale Dep</th>
                             <th>Sale</th>
                             <th>Cost</th>
@@ -68,7 +67,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create Job</h5>
+                <h5 id="modal_title" class="modal-title">Create Job</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -77,29 +76,19 @@
                 <form>
                     <div class="form-group">
                         <label for="job_id">Job Number</label>
-                        <input id="job_id" type="text" class="form-control" placeholder="JYY-XXXX" />
+                        <input id="job_id" type="text" class="form-control" placeholder="JYYXXXX" />
                     </div>
                     <div class="form-group">
                         <label for="job_name">Job Name</label>
                         <input id="job_name" type="text" class="form-control" placeholder="Job Name" />
                     </div>
                     <div class="form-group">
-                        <label for="job_description">Job Description</label>
-                        <input id="job_description" type="text" class="form-control" placeholder="Job Description" />
-                    </div>
-                    <div class="form-group">
                         <label for="sale_department">Sale Department</label>
-                        <select id="sale_department" class="form-control">
-                            <option value="" selected disabled>Please Select Department</option>
-                            <option value="QIR">QIR</option>
-                        </select>
+                        <select id="sale_department" class="form-control"></select>
                     </div>
                     <div class="form-group">
                         <label for="sale">Sale</label>
-                        <select id="sale" class="form-control">
-                            <option value="" selected disabled>Please Select Sale</option>
-                            <option value="Korakod.P">Korakod.P</option>
-                        </select>
+                        <select id="sale" class="form-control"></select>
                     </div>
                     <div class="form-group row">
                         <div class="col-xl-6">
@@ -138,9 +127,7 @@
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <select id="status" class="form-control">
-                            <option value="" selected disabled>Please Select Status</option>
-                        </select>
+                        <input id="status" type="text" class="form-control" placeholder="Job Status" />
                     </div>
                 </form>
             </div>
@@ -155,9 +142,18 @@
 @section Scripts
 {
     <script type="text/javascript">
-
+        //Variable Declaration
         var table;
         var update = false;
+        var jobs = [];
+        var users = [];
+        var departments = [];
+
+        //Change these parameters to true to show result
+        var debug_jobs = false;
+        var debug_user = false;
+        var debug_department = false;
+        var debug_job_string = false;
 
         $(document).ready(function () {
             GetJobs();
@@ -170,10 +166,41 @@
 	            contentType: 'application/x-www-form-urlencoded',
                 data: { },
                 success: function (response) {
+                    jobs = response;
+                    if (debug_jobs)
+                        console.log(jobs);
                     GenerateTable(response);
                 }
             });
         };
+
+        async function GetUsers() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetUsers", "User")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { },
+                success: function (response) {
+                    users = response;
+                    if (debug_user)
+                        console.log(users);
+                }
+            });
+        }
+
+        async function GetDepartments() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetDepartments", "Department")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { },
+                success: function (response) {
+                    departments = response;
+                    if (debug_department)
+                        console.log(departments);
+                }
+            });
+        }
 
         function GenerateTable(jobs) {
             var datas = [];
@@ -185,7 +212,6 @@
                 datas.push([
                     jobs[i].job_id,
                     jobs[i].job_name,
-                    jobs[i].job_description,
                     jobs[i].sale_department,
                     jobs[i].sale,
                     jobs[i].cost,
@@ -201,15 +227,11 @@
 
             table = $('#table_job').DataTable({
                 data: datas,
+                lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
                 fixedHeader: true,
                 columnDefs: [
                     {
-                        targets: [2],
-                        visible: false,
-                        searchable: false
-                    },
-                    {
-                        targets: [1,2,3,4,5,6,7,8,9,10,11,12],
+                        targets: [1,2,3,4,5,6,7,8,9,10,11],
                         className: "border-left"
                     },
                 ],
@@ -225,74 +247,70 @@
                     $('td:eq(9)', row).addClass("text-center");
                     $('td:eq(10)', row).addClass("text-center");
                     $('td:eq(11)', row).addClass("text-center");
-                    $('td:eq(12)', row).addClass("text-center");
                 }
             });
         };
 
         $('#btn_create').on('click', function () {
-            CreateJob();
+            GetDepartments().then(() => GenerateDepartmentsOption())
+                .then(() => GetUsers()).then(() => GenerateUsersOption())
+                .then(() => Prepmodal());
         });
 
-        function CreateJob() {
+        function GenerateDepartmentsOption() {
+            $('#sale_department').empty();
+            var sale_dep_string = '<option value="">Please Select Department</option>';
+            for (var i = 0; i < departments.length; i++) {
+                sale_dep_string += '<option value="' + departments[i].department_name + '">' + departments[i].department_name + '</option>';
+            }
+            $('#sale_department').append(sale_dep_string);
+        }
+
+        function GenerateUsersOption() {
+            $('#sale').empty();
+            var sale_str = '<option value="">Please Select Sale</option>';
+            for (var i = 0; i < users.length; i++) {
+                sale_str += '<option value="' + users.user_id + '">' + users.user_name + '</option>';
+            }
+            $('#sale').append(sale_str);
+        }
+
+        function Prepmodal() {
+            update = false;
             $('#modal_job').modal();
-            $('#btn_save').attr('disabled', true);
-            $('#job_number').val();
-            $('#job_name').val();
-            $('#job_description').val();
-            $('#sale_department').val();
-            $('#sale').val();
-            $('#cost').val();
-            $('#md').val();
-            $('#pd').val();
-            $('#status').val();
+            $('#modal_title').text("Create Job");
+            $('#job_id').val(null);
+            $('#job_name').val(null);
+            $('#sale_department').val(null);
+            $('#sale').val(null);
+            $('#cost').val(null);
+            $('#md').val(null);
+            $('#pd').val(null);
+            $('#status').val(null);
         };
 
         $('#table_job tbody').on('click', 'tr', function () {
-            EditJob(table.row(this).data());
+            GetDepartments().then(() => GenerateDepartmentsOption())
+                .then(() => GetUsers()).then(() => GenerateUsersOption())
+                .then(() => EditJob(table.row(this).data()));
         });
 
         function EditJob(data) {
-            $('#modal_job').modal();
             update = true;
+            $('#modal_job').modal();
+            $('#modal_title').text("Edit Job");
+
             var job_id = data[0];
             var job_name = data[1];
-            var job_description = data[2];
-            var sale_department = data[3];
-            var sale = data[4];
-            var cost = data[5];
-            var md = data[6];
-            var pd = data[7];
-            var factor = data[8];
-            var manpower = data[9];
-            var cost_manpower = data[10];
-            var ot_manpower = data[11];
-            var status = data[12];
-
-            var debug = true;
-            if (debug) {
-                console.log("Job ID: " + job_id);
-                console.log("Job Name: " + job_name);
-                console.log("Job Description: " + job_description);
-                console.log("Sale Department: " + sale_department);
-                console.log("Sale: " + sale);
-                console.log("Cost: " + cost);
-                console.log("MD: " + md);
-                console.log("PD: " + pd);
-                console.log("Factor: " + factor);
-                console.log("Manpower: " + manpower);
-                console.log("Cost/Manpower: " + cost_manpower);
-                console.log("OT Manpower: " + ot_manpower);
-                console.log("Status: " + status);
-            }
-
-            sale_department = (sale_department === null) ? "" : sale_department;
-            sale = (sale === null) ? "" : sale;
-            status = (status === null) ? "" : status;
+            var sale_department = data[2];
+            var sale = data[3];
+            var cost = data[4];
+            var md = data[5];
+            var pd = data[6];
+            var status = data[7];
 
             $('#job_id').val(job_id);
             $('#job_name').val(job_name);
-            $('#job_description').val(job_description);
             $('#sale_department').val(sale_department);
             $('#sale').val(sale);
             $('#cost').val(cost);
@@ -301,24 +319,9 @@
             $('#status').val(status);
         }
 
-        $('#job_number').on('change', function () {
-            EnableSave();
-        });
-
-        function EnableSave() {
-            var en = 1;
-            en *= ($('#job_number').val().trim() === "") ? 0 : 1;
-            if(en === 1)
-                $('#btn_save').attr('disabled', false);
-            else
-                $('#btn_save').attr('disabled', true);
-        };
-
-        
         $('#btn_save').on('click', function () {
             var job_id = $('#job_id').val();
             var job_name = $('#job_name').val();
-            var job_description = $('#job_description').val();
             var sale_department = $('#sale_department').val();
             var sale = $('#sale').val();
             var cost = $('#cost').val();
@@ -326,27 +329,9 @@
             var pd_rate = $('#pd_rate').val();
             var status = $('#status').val();
 
-            sale_department = (sale_department === null) ? "" : sale_department;
-            sale = (sale === null) ? "" : sale;
-            status = (status === null) ? "" : status;
-
-            var debug = true;
-            if (debug) {
-                console.log("Job Number: " + job_id);
-                console.log("Job Name: " + job_name);
-                console.log("Job Description: " + job_description);
-                console.log("Sale Department: " + sale_department);
-                console.log("Sale: " + sale);
-                console.log("Cost: " + cost);
-                console.log("MD Rate: " + md_rate);
-                console.log("PD Rate: " + pd_rate);
-                console.log("Status: " + status);
-            }
-
             var job_string = JSON.stringify({
                 "job_id": job_id,
                 "job_name": job_name,
-                "job_description": job_description,
                 "sale_department": sale_department,
                 "sale": sale,
                 "cost": cost,
@@ -355,14 +340,17 @@
                 "status": status
             });
 
+            if (debug_job_string)
+                console.log(job_string);
+
             if(update)
                 UpdateJob(job_string);
             else
                 AddJob(job_string);
         });
 
-        function AddJob(job_string) {
-            $.ajax({
+        async function AddJob(job_string) {
+            await $.ajax({
                 type: "POST",
                 url: '@Url.Action("AddJob", "Job")',
 	            contentType: 'application/x-www-form-urlencoded',
@@ -370,7 +358,7 @@
                     job_string
                 },
                 success: function (response) {
-                    if (response == "Success")
+                    if (response === "Success")
                         location.reload();
                     else
                         alert(response);
@@ -378,8 +366,8 @@
             });
         };
 
-        function UpdateJob(job_string) {
-            $.ajax({
+        async function UpdateJob(job_string) {
+            await $.ajax({
                 type: "PATCH",
                 url: '@Url.Action("UpdateJob", "Job")',
 	            contentType: 'application/x-www-form-urlencoded',
@@ -387,7 +375,7 @@
                     job_string
                 },
                 success: function (response) {
-                    if (response == "Success")
+                    if (response === "Success")
                         location.reload();
                     else
                         alert(response);

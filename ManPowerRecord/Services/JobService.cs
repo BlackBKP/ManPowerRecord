@@ -35,7 +35,6 @@ namespace ManPowerRecord.Services
                     {
                         job_id = data_reader["job_id"] != DBNull.Value ? data_reader["job_id"].ToString() : "",
                         job_name = data_reader["job_name"] != DBNull.Value ? data_reader["job_name"].ToString() : "",
-                        job_description = data_reader["job_description"] != DBNull.Value ? data_reader["job_description"].ToString() : "",
                         sale_department = data_reader["sale_department"] != DBNull.Value ? data_reader["sale_department"].ToString() : "",
                         sale = data_reader["sale"] != DBNull.Value ? data_reader["sale"].ToString() : "",
                         cost = data_reader["cost"] != DBNull.Value ? Convert.ToInt32(data_reader["cost"]) : 0,
@@ -47,6 +46,7 @@ namespace ManPowerRecord.Services
                         ot_manpower = 0,
                         status = data_reader["status"] != DBNull.Value ? data_reader["status"].ToString() : "",
                     };
+                    job.factor = job.md_rate + job.pd_rate;
                     jobs.Add(job);
                 }
                 data_reader.Close();
@@ -60,14 +60,13 @@ namespace ManPowerRecord.Services
             this.Database = new ConnectDB();
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using(SqlCommand command = new SqlCommand("INSERT INTO Job(job_id, job_name, job_description, sale_department, sale, cost, md_rate, pd_rate, status) " +
-                                                      "VALUES(@job_id, @job_name, @job_description, @sale_department, @sale, @cost, @md_rate, @pd_rate, @status)",connection))
+            using(SqlCommand command = new SqlCommand("INSERT INTO Jobs(job_id, job_name, sale_department, sale, cost, md_rate, pd_rate, status) " +
+                                                      "VALUES(@job_id, @job_name, @sale_department, @sale, @cost, @md_rate, @pd_rate, @status)",connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;
                 command.Parameters.AddWithValue("@job_id", job.job_id.Replace("-", String.Empty));
                 command.Parameters.AddWithValue("@job_name", job.job_name);
-                command.Parameters.AddWithValue("@job_description", job.job_description);
                 command.Parameters.AddWithValue("@sale_department", job.sale_department);
                 command.Parameters.AddWithValue("@sale", job.sale);
                 command.Parameters.AddWithValue("@cost", job.cost);
@@ -85,9 +84,8 @@ namespace ManPowerRecord.Services
             this.Database = new ConnectDB();
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using(SqlCommand command = new SqlCommand("UPDATE Job SET " +
+            using(SqlCommand command = new SqlCommand("UPDATE Jobs SET " +
                 "job_name = @job_name, " +
-                "job_description = @job_description, " +
                 "sale_department = @sale_department, " +
                 "sale = @sale, " +
                 "cost = @cost, " +
@@ -99,7 +97,6 @@ namespace ManPowerRecord.Services
                 command.Connection = connection;
                 command.Parameters.AddWithValue("@job_id", job.job_id.Replace("-", String.Empty));
                 command.Parameters.AddWithValue("@job_name", job.job_name);
-                command.Parameters.AddWithValue("@job_description", job.job_description);
                 command.Parameters.AddWithValue("@sale_department", job.sale_department);
                 command.Parameters.AddWithValue("@sale", job.sale);
                 command.Parameters.AddWithValue("@cost", job.cost);
