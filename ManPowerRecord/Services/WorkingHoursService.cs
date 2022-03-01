@@ -74,7 +74,7 @@ namespace ManPowerRecord.Services
             return whs;
         }
 
-        public List<WorkingHoursModel> GetWorkingHours(string year, string month)
+        public List<WorkingHoursModel> GetWorkingHours(string year, string month, string user)
         {
             List<WorkingHoursModel> whs = new List<WorkingHoursModel>();
             SqlConnection connection = Database.Connect();
