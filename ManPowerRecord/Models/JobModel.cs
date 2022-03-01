@@ -9,7 +9,6 @@ namespace ManPowerRecord.Models
     {
         public string job_id { get; set; }
         public string job_name { get; set; }
-        public string job_description { get; set; }
         public string sale_department { get; set; }
         public string sale { get; set; }
         public int cost { get; set; }
