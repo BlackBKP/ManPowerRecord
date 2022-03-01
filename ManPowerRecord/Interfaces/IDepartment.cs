@@ -9,5 +9,7 @@ namespace ManPowerRecord.Interfaces
     interface IDepartment
     {
         List<DepartmentModel> GetDepartments();
+        string CreateDepartment(DepartmentModel department);
+        string UpdateUser(DepartmentModel department);
     }
 }

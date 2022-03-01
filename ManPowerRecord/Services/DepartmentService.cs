@@ -45,5 +45,41 @@ namespace ManPowerRecord.Services
             connection.Close();
             return departments;
         }
+
+        public string CreateDepartment(DepartmentModel department)
+        {
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+            using (SqlCommand command = new SqlCommand("INSERT INTO [Departments](department_name, description) VALUES(@department_name, @description)", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@department_name", department.department_name);
+                command.Parameters.AddWithValue("@description", department.description);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+            return "Success";
+        }
+
+        public string UpdateUser(DepartmentModel department)
+        {
+            SqlConnection connection = Database.Connect();
+            connection.Open();
+            using (SqlCommand command = new SqlCommand("UPDATE [Departments] SET " +
+                "department_name = @department_name, " +
+                "description = @description, " +
+                "WHERE department_id = @department_id", connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@department_name", department.department_name);
+                command.Parameters.AddWithValue("@description", department.description);
+                command.Parameters.AddWithValue("@department_id", department.department_id);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+            return "Success";
+        }
     }
 }
