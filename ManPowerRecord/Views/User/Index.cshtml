@@ -241,7 +241,7 @@
 
         async function CreateUser(user_string) {
             await $.ajax({
-                type: "GET",
+                type: "POST",
                 url: '@Url.Action("CreateUser", "User")',
 	            contentType: 'application/x-www-form-urlencoded',
                 data: { user_string },
@@ -256,7 +256,7 @@
 
         async function UpdateUser(user_string) {
             await $.ajax({
-                type: "GET",
+                type: "PATCH",
                 url: '@Url.Action("UpdateUser", "User")',
 	            contentType: 'application/x-www-form-urlencoded',
                 data: { user_string },
