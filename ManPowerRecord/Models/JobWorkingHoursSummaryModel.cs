@@ -8,6 +8,7 @@ namespace ManPowerRecord.Models
     public class JobWorkingHoursSummaryModel
     {
         public string job_id { get; set; }
+        public string job_name { get; set; }
         public int normal_hours { get; set; }
         public int normal_min { get; set; }
         public int ot1_5_hours { get; set; }
