@@ -33,6 +33,14 @@ namespace ManPowerRecord.Controllers
             return Json(whs);
         }
 
+        [HttpGet]
+        public JsonResult GetWorkingHoursByDate(string user_id, DateTime working_date)
+        {
+            List<WorkingHoursModel> whs = WorkingHoursService.GetWorkingHours(user_id, working_date);
+            whs = whs.OrderByDescending(w => w.working_date).ToList();
+            return Json(whs);
+        }
+
         [HttpPost]
         public JsonResult AddWorkingHours(string wh_string)
         {
@@ -47,12 +55,6 @@ namespace ManPowerRecord.Controllers
             WorkingHoursModel wh = JsonConvert.DeserializeObject<WorkingHoursModel>(wh_string);
             var result = WorkingHoursService.UpdateWorkingHours(wh);
             return Json(result);
-        }
-
-        public List<EventModel> GetHolidays()
-        {
-            List<EventModel> holidays = new List<EventModel>();
-            return holidays;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
