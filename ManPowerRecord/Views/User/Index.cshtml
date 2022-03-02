@@ -25,7 +25,7 @@
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <table id="table_user" class="table table-sm compact border table-striped table-hover w-100">
+                        <table id="table_user" class="table table-sm compact border text-center table-striped table-hover w-100">
                             <thead class="text-center">
                                 <tr>
                                     <th>No</th>
@@ -159,14 +159,14 @@
                 data: datas,
                 columnDefs: [
                     {
+                        targets: [0],
+                        visible: false
+                    },
+                    {
                         targets: [1, 2, 3],
                         className: "border-left"
                     }
                 ],
-                rowCallback: function (row, data) {
-                    $('td:eq(0)', row).addClass("text-center");
-                    $('td:eq(3)', row).addClass("text-center");
-                }
             });
         }
 
@@ -219,22 +219,25 @@
             var user_id = $('#user_id').val();
             var user_name = $('#user_name').val();
             var department = $('#department').val();
-
-            var user_string = JSON.stringify({
-                "user_no": user_no,
-                "user_id": user_id,
-                "user_name": user_name,
-                "department": department,
-            });
-
-            if (debug_user_string) {
-                console.log(user_string);
-            }
-
             if (update) {
+                var user_string = JSON.stringify({
+                    "user_no": user_no,
+                    "user_id": user_id,
+                    "user_name": user_name,
+                    "department": department,
+                });
+                if (debug_user_string)
+                    console.log(user_string);
                 UpdateUser(user_string);
             }
             else {
+                var user_string = JSON.stringify({
+                    "user_id": user_id,
+                    "user_name": user_name,
+                    "department": department,
+                });
+                if (debug_user_string)
+                    console.log(user_string);
                 CreateUser(user_string);
             }
         });
