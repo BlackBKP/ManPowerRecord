@@ -11,7 +11,8 @@ namespace ManPowerRecord.Services
     {
         public SqlConnection Connect()
         {
-            string connection_string = @"Data Source=localhost\SQLExpress;Initial Catalog=MPR;User ID=sa;Password=p@ssw0rd";
+            //string connection_string = @"Data Source=localhost\SQLExpress;Initial Catalog=MPR;User ID=sa;Password=p@ssw0rd";
+            string connection_string = @"Data Source=localhost\SQLExpress;Initial Catalog=MPR_TEST;User ID=sa;Password=p@ssw0rd";
             SqlConnection connection = new SqlConnection(connection_string);
             return connection;
         }

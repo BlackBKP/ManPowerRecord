@@ -44,22 +44,23 @@ namespace ManPowerRecord.Controllers
                 int count = whs.Where(w => w.working_date == dd).Count();
                 if(count > 0)
                 {
+                    List<WorkingHoursModel> whsd = whs.Where(w => w.working_date == dd).Select(s => s).ToList();
                     for (int j = 0; j < count; j++)
                     {
                         WorkingHoursModel wh = new WorkingHoursModel()
                         {
                             working_date = dd,
-                            job_id = whs.Where(w => w.working_date == dd).Select(s => s.job_id).FirstOrDefault(),
-                            job_name = whs.Where(w => w.working_date == dd).Select(s => s.job_name).FirstOrDefault(),
-                            task_id = whs.Where(w => w.working_date == dd).Select(s => s.task_id).FirstOrDefault(),
-                            task_name = whs.Where(w => w.working_date == dd).Select(s => s.task_name).FirstOrDefault(),
-                            start_time = whs.Where(w => w.working_date == dd).Select(s => s.start_time).FirstOrDefault(),
-                            stop_time = whs.Where(w => w.working_date == dd).Select(s => s.stop_time).FirstOrDefault(),
-                            lunch = whs.Where(w => w.working_date == dd).Select(s => s.lunch).FirstOrDefault(),
-                            dinner = whs.Where(w => w.working_date == dd).Select(s => s.dinner).FirstOrDefault(),
-                            normal = whs.Where(w => w.working_date == dd).Select(s => s.normal).FirstOrDefault(),
-                            ot1_5 = whs.Where(w => w.working_date == dd).Select(s => s.ot1_5).FirstOrDefault(),
-                            ot3_0 = whs.Where(w => w.working_date == dd).Select(s => s.ot3_0).FirstOrDefault(),
+                            job_id = whsd[j].job_id,
+                            job_name = whsd[j].job_name,
+                            task_id = whsd[j].task_id,
+                            task_name = whsd[j].task_name,
+                            start_time = whsd[j].start_time,
+                            stop_time = whsd[j].stop_time,
+                            lunch = whsd[j].lunch,
+                            dinner = whsd[j].dinner,
+                            normal = whsd[j].normal,
+                            ot1_5 = whsd[j].ot1_5,
+                            ot3_0 = whsd[j].ot3_0,
                         };
                         total.Add(wh);
                     }

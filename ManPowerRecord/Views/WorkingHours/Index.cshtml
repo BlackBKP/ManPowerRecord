@@ -31,13 +31,12 @@
                         <tr>
                             <th>Date</th>
                             <th>User ID</th>
-                            <th>Job ID</th>
-                            <th>Task ID</th>
+                            <th>Job</th>
+                            <th>Task</th>
                             <th>Start Time</th>
                             <th>Stop Time</th>
                             <th>Lunch</th>
                             <th>Dinner</th>
-                            <th>Note</th>
                             <th>Hours</th>
                             <th>OT 1.5</th>
                             <th>OT 3.0</th>
@@ -47,13 +46,12 @@
                         <tr>
                             <th>Date</th>
                             <th>User ID</th>
-                            <th>Job ID</th>
-                            <th>Task ID</th>
+                            <th>Job</th>
+                            <th>Task</th>
                             <th>Start Time</th>
                             <th>Stop Time</th>
                             <th>Lunch</th>
                             <th>Dinner</th>
-                            <th>Note</th>
                             <th>Hours</th>
                             <th>OT 1.5</th>
                             <th>OT 3.0</th>
@@ -209,10 +207,9 @@
                     whs[i].job_id,
                     whs[i].task_id,
                     whs[i].start_time.substring(0,5),
-                    whs[i].stop_time.substring(0,5),
+                    whs[i].stop_time.substring(0, 5),
                     whs[i].lunch,
                     whs[i].dinner,
-                    whs[i].note,
                     whs[i].normal.substring(0,5),
                     whs[i].ot1_5.substring(0,5),
                     whs[i].ot3_0.substring(0,5)
@@ -223,11 +220,12 @@
                 table.DataTable().destroy();
 
             table = $('#table_wh').DataTable({
+                lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
                 data: datas,
                 order: [[0, "desc"]],
                 columnDefs: [
                     {
-                        targets: [1,2,3,4,5,6,7,8,9,10,11],
+                        targets: [1,2,3,4,5,6,7,8,9,10],
                         className: "border-left"
                     }
                 ],

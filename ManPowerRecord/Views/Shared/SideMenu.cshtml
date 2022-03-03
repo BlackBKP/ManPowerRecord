@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http
 <aside class="main-sidebar sidebar-dark-primary elevation-2">
     <a class="brand-link" asp-controller="Home" asp-action="Index">
-        @*<img src="~/images/icon.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8">*@
+        <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
         <span class="brand-text font-weight-light">MPR</span>
     </a>
 
@@ -14,6 +14,34 @@
                     <a class="nav-link" asp-controller="Home" asp-action="Index">
                         <i class="nav-icon fas fa-calendar-alt"></i>
                         <p>Calendar</p>
+                    </a>
+                </li>
+
+                <li class="nav-item" hidden>
+                    <a class="nav-link" asp-controller="WorkingHours" asp-action="Index">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>Working Hours</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="MonthlyWorkingHours" asp-action="Index">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p>Working Hours</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Analysis" asp-action="Index">
+                        <i class="nav-icon fas fa-info-circle"></i>
+                        <p>Analysis</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Engineer" asp-action="Index">
+                        <i class="nav-icon fas fa-star-half-alt"></i>
+                        <p>Engineer</p>
                     </a>
                 </li>
 
@@ -35,34 +63,6 @@
                     <a class="nav-link" asp-controller="Tasks" asp-action="Index">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>Tasks</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="WorkingHours" asp-action="Index">
-                        <i class="nav-icon fas fa-clock"></i>
-                        <p>Working Hours</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="MonthlyWorkingHours" asp-action="Index">
-                        <i class="nav-icon fas fa-calendar-alt"></i>
-                        <p>Working Hours (Monthly)</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Analysis" asp-action="Index">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>Analysis</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Engineer" asp-action="Index">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>Engineer</p>
                     </a>
                 </li>
 

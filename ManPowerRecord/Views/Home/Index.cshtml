@@ -13,7 +13,7 @@
         </select>
     </div>
     <div class="col-xl-2 col-lg-2 col-md-4 pb-3">
-        <button class="btn btn-primary form-control">
+        <button id="btn_filter" class="btn btn-primary form-control" disabled>
             <i class="fas fa-filter"></i> Filter
         </button>
     </div>
@@ -55,7 +55,7 @@
                     </div>
                     <div id="group_tasks" class="form-group">
                         <label for="table_tasks">Task(s) Today</label>
-                        <table id="table_tasks" class="table table-sm compact table-bordered table-hover table-striped w-100">
+                        <table id="table_tasks" class="table table-sm compact table-bordered text-center table-hover table-striped w-100">
                             <thead class="text-center">
                                 <tr>
                                     <th>No</th>
@@ -257,6 +257,10 @@
         }
 
         $('#filter_job').on('change', function () {
+            var job = $('#filter_job').val();
+            var enable_filter = 1;
+            enable_filter *= (job !== null) ? 1 : 0;
+            $('#btn_filter').attr('disabled', !enable_filter);
             GenerateTasksFilterOptions();
         });
 
@@ -314,7 +318,7 @@
                     right: 'prev,next'
                 },
                 events: datas,
-                height: 600,
+                height: 700,
                 editable: true,
                 selectable: true,
                 select: function (info) {
@@ -438,7 +442,7 @@
                 $('#lunch').prop('checked', chk_lunch);
                 $('#dinner').prop('checked', chk_dinner);
             }
-            $('#note').val();
+            $('#note').val(null);
         }
 
         $('#job_id').on('change', function () {
@@ -536,20 +540,58 @@
 
         var wh_index;
         function EditTask(event) {
-            var task = event.extendedProps;
+            update = true;
+            var user_id = event.extendedProps.user_id;
+            var date = event.extendedProps.working_date;
+            GetUsers()
+                .then(() => GenerateUsersOption())
+                .then(() => GetWorkingHoursByDate(user_id, date.split("T")[0]))
+                .then(() => PrepmodalEdit(event.extendedProps));
+        }
+
+        function PrepmodalEdit(task) {
+            wh_index = task.index;
+            GetJobs()
+                .then(() => GenerateJobsOption())
+                .then(() => $('#job_id').val(task.job_id));
+            if (wh_day.length > 0) {
+                $('#group_tasks').show()
+                $('#table_tasks tbody').empty();
+                var table_str = '';
+                for (var i = 0; i < wh_day.length; i++) {
+                    table_str += '<tr>';
+                    table_str += '<td>' + (i + 1) + '</td>';
+                    table_str += '<td>' + wh_day[i].job_id + '</td>';
+                    table_str += '<td>' + wh_day[i].task_name + '</td>';
+                    table_str += '<td>' + wh_day[i].start_time + '</td>';
+                    table_str += '<td>' + wh_day[i].stop_time + '</td>';
+                    table_str += '</tr>';
+                }
+                $('#table_tasks').append(table_str);
+            }
+            else {
+                $('#group_tasks').hide()
+            }
+            GetTasks()
+                .then(() => GenerateTasksOption())
+                .then(() => $('#task_id').val(task.task_id));
             if (debug_edit) {
                 console.log(task);
             }
             $('#modal_task').modal();
             $('#modal_task_title').text("Edit Task");
-            update = true;
-            wh_index = task.index;
             $('#user_id').val(task.user_id);
             $('#working_date').val(task.working_date.split("T")[0]);
-            $('#job_id').val(task.job_id);
-            $('#task_id').val(task.task_id);
             $('#start_time').val(task.start_time);
             $('#stop_time').val(task.stop_time);
+
+            if (wh_day.length > 1) {
+                $('#lunch').attr('disabled', true);
+                $('#dinner').attr('disabled', true);
+            } else {
+                $('#lunch').attr('disabled', false);
+                $('#dinner').attr('disabled', false);
+            }
 
             if (task.lunch) {
                 $('#lunch').prop('checked', true);
@@ -598,6 +640,25 @@
                         alert(response);
                 }
             });
+        }
+
+        $('#btn_filter').on('click', function () {
+            var job_id = $('#filter_job').val();
+            var task_id = $('#filter_task').val();
+            if (task_id === null) {
+                FilterWorkingHoursByJob(job_id);
+            }
+            else {
+                FilterWorkingHoursByTask(job_id, task_id);
+            }
+        });
+
+        async function FilterWorkingHoursByJob(job_id) {
+
+        }
+
+        async function FilterWorkingHoursByTask(job_id,task_id) {
+
         }
 
     </script>
