@@ -22,11 +22,9 @@ namespace ManPowerRecord.Services
             List<UserModel> users = new List<UserModel>();
             SqlConnection connection = Database.Connect();
             connection.Open();
-
-            string string_command = "SELECT * FROM [Users]";
+            string string_command = string.Format($@"SELECT * FROM [Users]");
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
-
             if (data_reader.HasRows)
             {
                 while (data_reader.Read())
@@ -42,7 +40,6 @@ namespace ManPowerRecord.Services
                 }
                 data_reader.Close();
             }
-
             connection.Close();
             return users;
         }
@@ -51,7 +48,12 @@ namespace ManPowerRecord.Services
         {
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using (SqlCommand command = new SqlCommand("INSERT INTO [Users](user_id, user_name, department) VALUES(@user_id, @user_name, @department)", connection))
+            string string_commamnd = string.Format($@"
+                INSERT INTO [Users]
+                    (user_id, user_name, department) 
+                VALUES
+                    (@user_id, @user_name, @department)");
+            using (SqlCommand command = new SqlCommand(string_commamnd, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;
@@ -68,11 +70,14 @@ namespace ManPowerRecord.Services
         {
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using (SqlCommand command = new SqlCommand("UPDATE [Users] SET " +
-                "user_id = @user_id, " +
-                "user_name = @user_name, " +
-                "department = @department, " +
-                "WHERE user_no = @user_no", connection))
+            string string_command = string.Format($@"
+                UPDATE [Users] 
+                SET
+                    user_id = @user_id,
+                    user_name = @user_name,
+                    department = @department,
+                WHERE user_no = @user_no");
+            using (SqlCommand command = new SqlCommand(string_command, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;

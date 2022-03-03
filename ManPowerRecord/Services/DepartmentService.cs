@@ -22,11 +22,9 @@ namespace ManPowerRecord.Services
             List<DepartmentModel> departments = new List<DepartmentModel>();
             SqlConnection connection = Database.Connect();
             connection.Open();
-
-            string string_command = "SELECT * FROM Departments";
+            string string_command = string.Format($@"SELECT * FROM Departments");
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
-
             if (data_reader.HasRows)
             {
                 while (data_reader.Read())
@@ -41,7 +39,6 @@ namespace ManPowerRecord.Services
                 }
                 data_reader.Close();
             }
-
             connection.Close();
             return departments;
         }
@@ -50,7 +47,11 @@ namespace ManPowerRecord.Services
         {
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using (SqlCommand command = new SqlCommand("INSERT INTO [Departments](department_name, description) VALUES(@department_name, @description)", connection))
+            string string_command = string.Format($@"
+                INSERT INTO 
+                    [Departments](department_name, description) 
+                    VALUES(@department_name, @description)");
+            using (SqlCommand command = new SqlCommand(string_command, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;
@@ -66,10 +67,13 @@ namespace ManPowerRecord.Services
         {
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using (SqlCommand command = new SqlCommand("UPDATE [Departments] SET " +
-                "department_name = @department_name, " +
-                "description = @description, " +
-                "WHERE department_id = @department_id", connection))
+            string string_command = string.Format($@"
+                UPDATE [Departments] 
+                SET
+                    department_name = @department_name,
+                    description = @description,
+                WHERE department_id = @department_id");
+            using (SqlCommand command = new SqlCommand(string_command, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;

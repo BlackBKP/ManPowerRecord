@@ -22,20 +22,19 @@ namespace ManPowerRecord.Services
             List<JobModel> jobs = new List<JobModel>();
             SqlConnection connection = Database.Connect();
             connection.Open();
-
-            string string_command = "SELECT " +
-                                        "Jobs.job_id, " +
-                                        "Jobs.job_name, " +
-                                        "Jobs.sale_department, " +
-                                        "Jobs.sale, " +
-                                        "Jobs.cost, " +
-                                        "Jobs.md_rate, " +
-                                        "Jobs.pd_rate, " +
-                                        "Jobs.status " +
-                                    "FROM Jobs";
+            string string_command = string.Format($@"
+                SELECT
+                    Jobs.job_id,
+                    Jobs.job_name,
+                    Jobs.sale_department,
+                    Jobs.sale,
+                    Jobs.cost,
+                    Jobs.md_rate,
+                    Jobs.pd_rate,
+                    Jobs.status
+                FROM Jobs");
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
-
             if (data_reader.HasRows)
             {
                 while (data_reader.Read())
@@ -69,8 +68,11 @@ namespace ManPowerRecord.Services
             this.Database = new ConnectDB();
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using(SqlCommand command = new SqlCommand("INSERT INTO Jobs(job_id, job_name, sale_department, sale, cost, md_rate, pd_rate, status) " +
-                                                      "VALUES(@job_id, @job_name, @sale_department, @sale, @cost, @md_rate, @pd_rate, @status)",connection))
+            string string_command = string.Format($@"
+            INSERT INTO 
+                Jobs(job_id, job_name, sale_department, sale, cost, md_rate, pd_rate, status)
+                VALUES(@job_id, @job_name, @sale_department, @sale, @cost, @md_rate, @pd_rate, @status)");
+            using(SqlCommand command = new SqlCommand(string_command, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;
@@ -93,14 +95,18 @@ namespace ManPowerRecord.Services
             this.Database = new ConnectDB();
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using(SqlCommand command = new SqlCommand("UPDATE Jobs SET " +
-                "job_name = @job_name, " +
-                "sale_department = @sale_department, " +
-                "sale = @sale, " +
-                "cost = @cost, " +
-                "md_rate = @md_rate, " +
-                "pd_rate = @pd_rate, " +
-                "status = @status WHERE job_id = @job_id", connection))
+            string string_command = string.Format($@"
+                UPDATE Jobs 
+                SET
+                    job_name = @job_name,
+                    sale_department = @sale_department,
+                    sale = @sale,
+                    cost = @cost,
+                    md_rate = @md_rate,
+                    pd_rate = @pd_rate,
+                    status = @status 
+                WHERE job_id = @job_id");
+            using(SqlCommand command = new SqlCommand(string_command, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;

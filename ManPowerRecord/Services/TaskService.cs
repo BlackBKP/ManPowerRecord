@@ -22,11 +22,9 @@ namespace ManPowerRecord.Services
             List<TaskModel> tasks = new List<TaskModel>();
             SqlConnection connection = Database.Connect();
             connection.Open();
-
-            string string_command = "SELECT * FROM Tasks LEFT JOIN Jobs ON Tasks.job_id = Jobs.job_id";
+            string string_command = string.Format($@"SELECT * FROM Tasks LEFT JOIN Jobs ON Tasks.job_id = Jobs.job_id");
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
-
             if (data_reader.HasRows)
             {
                 while (data_reader.Read())
@@ -44,7 +42,6 @@ namespace ManPowerRecord.Services
                 }
                 data_reader.Close();
             }
-
             connection.Close();
             return tasks;
         }
@@ -53,8 +50,8 @@ namespace ManPowerRecord.Services
         {
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using(SqlCommand command = new SqlCommand("INSERT INTO Tasks(task_name, job_id) " +
-                                                      "VALUES(@task_name, @job_id)", connection))
+            string string_command = string.Format($@"INSERT INTO Tasks(task_name, job_id) VALUES(@task_name, @job_id)");
+            using(SqlCommand command = new SqlCommand(string_command, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;
@@ -70,10 +67,13 @@ namespace ManPowerRecord.Services
         {
             SqlConnection connection = Database.Connect();
             connection.Open();
-            using(SqlCommand command = new SqlCommand("UPDATE TASKS SET " +
-                "task_name = @task_name, " +
-                "job_id = @job_id, " +
-                "WHERE task_id = @task_id", connection))
+            string string_command = string.Format($@"
+                UPDATE TASKS 
+                SET
+                    task_name = @task_name,
+                    job_id = @job_id,
+                WHERE task_id = @task_id");
+            using(SqlCommand command = new SqlCommand(string_command, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
                 command.Connection = connection;

@@ -22,11 +22,9 @@ namespace ManPowerRecord.Services
             List<HolidayModel> holidays = new List<HolidayModel>();
             SqlConnection connection = Database.Connect();
             connection.Open();
-
-            string string_command = "SELECT * FROM Holidays";
+            string string_command = string.Format($@"SELECT * FROM Holidays");
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
-
             if (data_reader.HasRows)
             {
                 while (data_reader.Read())
@@ -41,7 +39,6 @@ namespace ManPowerRecord.Services
                 }
                 data_reader.Close();
             }
-
             connection.Close();
             return holidays.OrderBy(o => o.date).ToList();
         }

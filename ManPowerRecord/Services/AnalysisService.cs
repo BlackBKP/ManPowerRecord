@@ -22,21 +22,20 @@ namespace ManPowerRecord.Services
             List<TaskTotalHoursModel> tasks = new List<TaskTotalHoursModel>();
             SqlConnection connection = Database.Connect();
             connection.Open();
-
-            string string_command = string.Format($@"   SELECT
-                                                            [WH2022].job_id,
-                                                            [Jobs].job_name,
-                                                            [WH2022].task_id,
-                                                            [Tasks].task_name,
-                                                            SUM(DATEDIFF(HOUR, [WH2022].start_time, [WH2022].stop_time)) as total_hours
-                                                        FROM [WH2022]
-                                                        LEFT JOIN [Jobs] ON [WH2022].job_id = [Jobs].job_id
-                                                        LEFT JOIN [Tasks] ON [WH2022].task_id = [Tasks].task_id
-                                                        WHERE [WH2022].job_id = '{job_id}' 
-                                                        Group by [WH2022].job_id, [Jobs].job_name, [WH2022].task_id, [Tasks].task_name");
+            string string_command = string.Format($@"
+                SELECT
+                    [WH2022].job_id,
+                    [Jobs].job_name,
+                    [WH2022].task_id,
+                    [Tasks].task_name,
+                    SUM(DATEDIFF(HOUR, [WH2022].start_time, [WH2022].stop_time)) as total_hours
+                FROM [WH2022]
+                    LEFT JOIN [Jobs] ON [WH2022].job_id = [Jobs].job_id
+                    LEFT JOIN [Tasks] ON [WH2022].task_id = [Tasks].task_id
+                WHERE [WH2022].job_id = '{job_id}'
+                Group by [WH2022].job_id, [Jobs].job_name, [WH2022].task_id, [Tasks].task_name");
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
-
             if (data_reader.HasRows)
             {
                 while (data_reader.Read())
@@ -53,7 +52,6 @@ namespace ManPowerRecord.Services
                 }
                 data_reader.Close();
             }
-
             connection.Close();
             return tasks;
         }
@@ -63,21 +61,20 @@ namespace ManPowerRecord.Services
             List<JobInvolveModel> invs = new List<JobInvolveModel>();
             SqlConnection connection = Database.Connect();
             connection.Open();
-
-            string string_command = string.Format($@"   SELECT
-	                                                        [WH2022].job_id,
-	                                                        [Jobs].job_name,
-                                                            [WH2022].user_id,
-	                                                        [Users].user_name,
-                                                            SUM(DATEDIFF(HOUR, [WH2022].start_time, [WH2022].stop_time)) as total_hours
-                                                        FROM [WH2022]
-                                                        LEFT JOIN [Jobs] ON [WH2022].job_id = [Jobs].job_id
-                                                        LEFT JOIN [Users] ON [WH2022].user_id = [Users].user_id
-                                                        WHERE [WH2022].job_id = '{job_id}'
-                                                        Group by [WH2022].job_id, [Jobs].job_name, [WH2022].user_id, [Users].user_name");
+            string string_command = string.Format($@"
+                SELECT
+                    [WH2022].job_id,
+                    [Jobs].job_name,
+                    [WH2022].user_id,
+                    [Users].user_name,
+                    SUM(DATEDIFF(HOUR, [WH2022].start_time, [WH2022].stop_time)) as total_hours
+                FROM [WH2022]
+                    LEFT JOIN [Jobs] ON [WH2022].job_id = [Jobs].job_id
+                    LEFT JOIN [Users] ON [WH2022].user_id = [Users].user_id
+                WHERE [WH2022].job_id = '{job_id}'
+                Group by [WH2022].job_id, [Jobs].job_name, [WH2022].user_id, [Users].user_name");
             SqlCommand command = new SqlCommand(string_command, connection);
             SqlDataReader data_reader = command.ExecuteReader();
-
             if (data_reader.HasRows)
             {
                 while (data_reader.Read())
@@ -94,7 +91,6 @@ namespace ManPowerRecord.Services
                 }
                 data_reader.Close();
             }
-
             connection.Close();
             return invs;
         }
